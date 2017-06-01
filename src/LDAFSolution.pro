@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 SUBDIRS += \
     LDAF \
-    QtUnitTests
+    LDAFUnitTests
 
 
     
