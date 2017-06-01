@@ -50,7 +50,7 @@ ApplicationWindow {
     }
 
     function loadHomePage(){
-        ldafbrowser.openPage("../../src/LanguageShadowingCenter/FirstPage.qml","browserContentLoader")
+        ldafbrowser.openPage("../../src/Resources/FirstPage.qml","browserContentLoader")
     }
 
     StateMachine{
