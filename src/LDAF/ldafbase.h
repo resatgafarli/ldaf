@@ -18,6 +18,7 @@ License: GPL-3.0
 class LDAFCommandListProcessor;
 
 class LDAFBase:public QObject{
+    Q_OBJECT
 public:
 
    explicit LDAFBase(QObject *parent=0,QPointer<LDAFCommandListProcessor>commandListProcessor=nullptr);
@@ -32,6 +33,8 @@ public:
    virtual void processBackwardByOne();
    virtual void processAllForward();
    virtual void processAllBackward();
+   Q_INVOKABLE bool hasNext() const;
+   Q_INVOKABLE bool hasPrev() const;
 
 private:
     QPointer<LDAFCommandListProcessor> m_commandListProcessor;
@@ -92,6 +95,8 @@ public:
     void processBackwardByOne();
     void processAllForward();
     void processAllBackward();
+    bool isActiveQueueEmpty() const;
+    bool isProcessedStackEmpty() const;
 
 private:
     void addUrlMessage(QUrl & message, LDAFBase * toObject, QString callBackJSFunc);

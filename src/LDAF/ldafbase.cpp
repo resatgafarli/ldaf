@@ -39,6 +39,19 @@ void LDAFBase::processAllBackward(){
     m_commandListProcessor->processAllBackward();
 }
 
+bool LDAFBase::hasNext() const{
+    if (!m_commandListProcessor->isActiveQueueEmpty())
+        return true;
+    else
+        return false;
+}
+
+bool LDAFBase::hasPrev() const{
+    if (!m_commandListProcessor->isProcessedStackEmpty())
+        return true;
+    else
+        return false;
+}
 
 /**/
 LDAFMessageType::LDAFMessageType(LDAFBase * basicObject,QString callBackJSFunc):
@@ -164,4 +177,11 @@ void LDAFCommandListProcessor::addJsonObjectMessage(QJsonObject & message, LDAFB
     m_activeQueue.enqueue(new LDAFCommand(new LDAFJson(message,toObject,callBackJSFunc), &LDAFMessageType::setMessage));
 }
 
+bool LDAFCommandListProcessor::isActiveQueueEmpty() const{
+    return m_activeQueue.isEmpty();
+}
+
+bool LDAFCommandListProcessor::isProcessedStackEmpty() const{
+    return m_processedStack.isEmpty();
+}
 

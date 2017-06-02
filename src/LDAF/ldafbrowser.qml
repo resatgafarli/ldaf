@@ -1,8 +1,6 @@
 import QtQuick 2.6
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4
-import QtQml.StateMachine 1.0
-
 
 ApplicationWindow {
     id: ldafbrowser_ui
@@ -10,6 +8,8 @@ ApplicationWindow {
     objectName: "ldafbrowser_appwindow"
     visibility: "FullScreen"
     title: "LDAFBrowser"
+
+
 
     Action {
         id: nextPage
@@ -32,8 +32,8 @@ ApplicationWindow {
     toolBar: ToolBar {
            Row{
                anchors.fill: parent
-               ToolButton { action: nextPage}
                ToolButton { action: prevPage}
+               ToolButton { action: nextPage}
                ToolButton { action: closeWindow}
            }
        }
@@ -47,15 +47,9 @@ ApplicationWindow {
         console.log(url)
         contentLoader.source = url
         contentLoader.asynchronous = true
+        nextPage.enabled = ldafbrowser.hasNext()
+        prevPage.enabled = ldafbrowser.hasPrev()
     }
 
-    StateMachine{
-        id: naviStates
-        initialState: both_closed
-        running: true
 
-        State {
-            id: both_closed
-        }
-    }
 }
