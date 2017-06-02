@@ -2,4 +2,9 @@
     <qresource prefix="/">
         <file>ldafbrowser.qml</file>
     </qresource>
+    <qresource prefix="/images">
+        <file>Previous.png</file>
+        <file>Next.png</file>
+        <file>Close.png</file>
+    </qresource>
 </RCC>

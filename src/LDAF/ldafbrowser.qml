@@ -15,18 +15,21 @@ ApplicationWindow {
         id: nextPage
         text: "Next Page"
         onTriggered: {ldafbrowser.nextPage()}
+        iconSource: {"images/Next.png"}
     }
 
     Action {
         id: prevPage
         text: "Prev Page"
         onTriggered: {ldafbrowser.prevPage()}
+        iconSource: {"images/Previous.png"}
     }
 
     Action {
         id: closeWindow
         text: "Close Window"
         onTriggered: {close()}
+        iconSource: {"images/Close.png"}
     }
 
     toolBar: ToolBar {
