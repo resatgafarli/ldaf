@@ -38,6 +38,9 @@ void LDAFBase::processAllForward(){
 void LDAFBase::processAllBackward(){
     m_commandListProcessor->processAllBackward();
 }
+void LDAFBase::reProcessCurrent()const{
+    m_commandListProcessor->reProcessCurrent();
+}
 
 bool LDAFBase::hasNext() const{
     if (!m_commandListProcessor->isActiveQueueEmpty())
@@ -52,6 +55,8 @@ bool LDAFBase::hasPrev() const{
     else
         return false;
 }
+
+
 
 /**/
 LDAFMessageType::LDAFMessageType(LDAFBase * basicObject,QString callBackJSFunc):
@@ -185,3 +190,9 @@ bool LDAFCommandListProcessor::isProcessedStackEmpty() const{
     return m_processedStack.isEmpty();
 }
 
+
+void LDAFCommandListProcessor::reProcessCurrent()const{
+    if (m_currentCommand !=nullptr){
+        m_currentCommand->executeCommand();
+    }
+}

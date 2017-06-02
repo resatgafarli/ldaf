@@ -6,5 +6,6 @@
         <file>Previous.png</file>
         <file>Next.png</file>
         <file>Close.png</file>
+        <file>Reload.png</file>
     </qresource>
 </RCC>

@@ -64,6 +64,10 @@ void LDAFBrowser::openPage(QString path,QString callBackJSFunc){
     processForwardByOne();
 }
 
+void LDAFBrowser::reloadCurrent(){
+    reProcessCurrent();
+}
+
 void LDAFBrowser::nextPage(){
     processForwardByOne();
 }

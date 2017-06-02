@@ -33,6 +33,7 @@ public:
    virtual void processBackwardByOne();
    virtual void processAllForward();
    virtual void processAllBackward();
+   virtual void reProcessCurrent()const;
    Q_INVOKABLE bool hasNext() const;
    Q_INVOKABLE bool hasPrev() const;
 
@@ -95,6 +96,7 @@ public:
     void processBackwardByOne();
     void processAllForward();
     void processAllBackward();
+    void reProcessCurrent() const;
     bool isActiveQueueEmpty() const;
     bool isProcessedStackEmpty() const;
 

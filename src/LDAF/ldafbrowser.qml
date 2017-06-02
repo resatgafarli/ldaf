@@ -19,6 +19,14 @@ ApplicationWindow {
     }
 
     Action {
+        id: reloadPage
+        text: "Reload Page"
+        onTriggered: {ldafbrowser.reloadCurrent()}
+        iconSource: {"images/Reload.png"}
+    }
+
+
+    Action {
         id: prevPage
         text: "Prev Page"
         onTriggered: {ldafbrowser.prevPage()}
@@ -36,6 +44,7 @@ ApplicationWindow {
            Row{
                anchors.fill: parent
                ToolButton { action: prevPage}
+               ToolButton { action: reloadPage}
                ToolButton { action: nextPage}
                ToolButton { action: closeWindow}
            }
