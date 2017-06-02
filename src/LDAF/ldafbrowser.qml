@@ -5,11 +5,9 @@ import QtQuick.Controls 1.4
 ApplicationWindow {
     id: ldafbrowser_ui
     visible: true
-    objectName: "ldafbrowser_appwindow"
+    objectName: "ldafbrowser_ui"
     visibility: "FullScreen"
     title: "LDAFBrowser"
-
-
 
     Action {
         id: nextPage
@@ -63,5 +61,7 @@ ApplicationWindow {
         prevPage.enabled = ldafbrowser.hasPrev()
     }
 
-
+    Component.onCompleted: {
+        ldafbrowser.openPage(ldafbrowser.getHomePagePath(),ldafbrowser_ui,"browserContentLoader")
+    }
 }

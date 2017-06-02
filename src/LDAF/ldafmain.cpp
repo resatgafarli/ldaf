@@ -27,10 +27,9 @@ int LDAFMain::instantiateLdaf(int argc, char *argv[]){
     m_mediatorCLP = new LDAFCommandListProcessor;
     m_ldafmediator = new LDAFMediator(this,m_mediatorCLP);
     m_ldafbrowser = new LDAFBrowser(this,m_browserCLP);
-
     m_ldafmediator->setReceiverObject(m_ldafbrowser);
     m_ldafbrowser->setReceiverObject(m_ldafmediator);
-    m_ldafbrowser->openPage(args.at(1),"browserContentLoader");
+    m_ldafbrowser->loadApplicationWindow(args.at(1));
 
     return a.exec();
 }

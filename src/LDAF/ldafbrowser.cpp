@@ -21,10 +21,14 @@ LDAFBrowser::LDAFBrowser(QObject * parent, QPointer<LDAFCommandListProcessor> co
     m_appWindowRoot(nullptr)
 {
     m_engine->rootContext()->setContextProperty("ldafbrowser",this);
-    loadApplicationWindow();
 }
 
-void LDAFBrowser::loadApplicationWindow(){
+QString LDAFBrowser::getHomePagePath()const{
+    return m_homePagePath;
+}
+
+void LDAFBrowser::loadApplicationWindow(QString path){
+    m_homePagePath = path;
     QUrl url("qrc:/ldafbrowser.qml");
     m_component->loadUrl(url);
     while (m_component->isLoading()){}
@@ -33,17 +37,18 @@ void LDAFBrowser::loadApplicationWindow(){
             qDebug()<<e.description()<<endl;
      }
 }
-void LDAFBrowser::loadHomePage(){
-if (!m_appWindowRoot.isNull())
-    QMetaObject::invokeMethod(m_appWindowRoot, "loadHomePage");
-}
 
-void LDAFBrowser::setURLMessage(QUrl url, QString callBackJSFunc){
+void LDAFBrowser::setURLMessage(QUrl url, QObject * callBackObject, QString callBackJSFunc){
+
+    if (callBackObject == nullptr){
+        qDebug()<<"Callback object is invalid"<<endl;
+        return;
+    }
+
     QVariant returnedValue;
     QFile file (url.path());
     if (file.exists()){
-        if (!m_appWindowRoot.isNull())
-            QMetaObject::invokeMethod(m_appWindowRoot, callBackJSFunc.toUtf8().data(),
+            QMetaObject::invokeMethod(callBackObject, callBackJSFunc.toUtf8().data(),
               Q_RETURN_ARG(QVariant, returnedValue),
               Q_ARG(QVariant, url));
     }else {
@@ -52,15 +57,15 @@ void LDAFBrowser::setURLMessage(QUrl url, QString callBackJSFunc){
 
 }
 
-void LDAFBrowser::setJsonMessage(QJsonObject jsonObject, QString callBackJSFunc){
+void LDAFBrowser::setJsonMessage(QJsonObject jsonObject, QObject * callBackObject, QString callBackJSFunc){
     QJsonDocument doc(jsonObject);
     qDebug()<<"JSON received from mediator"<<this<<doc.toJson()<<endl;
 }
 
-void LDAFBrowser::openPage(QString path,QString callBackJSFunc){
+void LDAFBrowser::openPage(QString path, QObject * callBackObject, QString callBackJSFunc){
     QUrl url;
     url.setPath(path);
-    addCommand(url,callBackJSFunc);
+    addCommand(url,callBackObject,callBackJSFunc);
     processForwardByOne();
 }
 
