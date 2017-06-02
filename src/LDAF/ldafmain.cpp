@@ -18,6 +18,11 @@ LDAFMain::LDAFMain(QObject *parent) : QObject(parent)
 }
 int LDAFMain::instantiateLdaf(int argc, char *argv[]){
     QGuiApplication a(argc, argv);
+    if (a.arguments().size()<=1){
+        qDebug()<<"Home page QML path is missed."<<endl;
+        return -1;
+     }
+    QStringList args = a.arguments();
     m_browserCLP = new LDAFCommandListProcessor;
     m_mediatorCLP = new LDAFCommandListProcessor;
     m_ldafmediator = new LDAFMediator(this,m_mediatorCLP);
@@ -25,7 +30,7 @@ int LDAFMain::instantiateLdaf(int argc, char *argv[]){
 
     m_ldafmediator->setReceiverObject(m_ldafbrowser);
     m_ldafbrowser->setReceiverObject(m_ldafmediator);
-    m_ldafbrowser->loadHomePage();
+    m_ldafbrowser->openPage(args.at(1),"browserContentLoader");
 
     return a.exec();
 }

@@ -98,6 +98,11 @@ void LDAFCommand::executeCommand(){
  }
 
 /**/
+LDAFCommandListProcessor::LDAFCommandListProcessor(QObject * parent):
+    QObject(parent),
+    m_currentCommand(nullptr)
+{}
+
 void LDAFCommandListProcessor::addCommand(QUrl message, LDAFBase * toObject, QString callBackJSFunc)
 {
     addUrlMessage(message,toObject,callBackJSFunc);
@@ -110,18 +115,32 @@ void LDAFCommandListProcessor::addCommand(QJsonObject message, LDAFBase * toObje
 
 void LDAFCommandListProcessor::processForwardByOne(){
     if (!m_activeQueue.isEmpty()){
-        LDAFCommand * command  = m_activeQueue.dequeue();
-        command->executeCommand();
+        auto * command  = m_activeQueue.dequeue();
         m_processedStack.push(command);
+        //pass execution of currently executed command
+        if (command == m_currentCommand){
+            processForwardByOne();
+        } else{
+            m_currentCommand = command;
+            command->executeCommand();
+        }
+
     }
 }
 
 void LDAFCommandListProcessor::processBackwardByOne(){
     if (!m_processedStack.isEmpty()){
-        LDAFCommand * command  = m_processedStack.top();
-        command->executeCommand();
+        auto * command  = m_processedStack.top();
         m_processedStack.pop();
         m_activeQueue.enqueue(command);
+        //pass execution of currently executed command
+        if (command == m_currentCommand){
+            processBackwardByOne();
+        }else{
+            m_currentCommand = command;
+            command->executeCommand();
+        }
+
     }
 }
 

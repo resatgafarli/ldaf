@@ -85,6 +85,7 @@ private:
 
 class LDAFCommandListProcessor:public QObject {
 public:
+    LDAFCommandListProcessor(QObject * parent=nullptr);
     void addCommand(QUrl message, LDAFBase * toObject, QString callBackJSFunc);
     void addCommand(QJsonObject message, LDAFBase * toObject, QString callBackJSFunc);
     void processForwardByOne();
@@ -95,7 +96,7 @@ public:
 private:
     void addUrlMessage(QUrl & message, LDAFBase * toObject, QString callBackJSFunc);
     void addJsonObjectMessage(QJsonObject & message, LDAFBase * toObject, QString callBackJSFunc);
-
+    LDAFCommand* m_currentCommand;
     QQueue<LDAFCommand*> m_activeQueue;
     QStack<LDAFCommand*> m_processedStack;
 
