@@ -4,6 +4,21 @@ set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 ######################## End Of General Settings ################
 
+######################### Output Dir Settings ######################
+##### An example output redirection setting
+
+#if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+#    set (OUTPUT_DIR ../output/debug) # could be assigned by parrent CMakeLists.txt
+#else()
+#    set (OUTPUT_DIR ../output/release) # could be assigned by parrent CMakeLists.txt
+#endif()
+
+#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_DIR})
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIR})
+
+######################### End of Output Dir Settings ######################
+
+
 ################## Qt AUTOMOC Settings ##########################
 #!!!!Caution: Should Be defined at top of CMakeLists.txt 
 #QT Library Definition/Inclusion 
