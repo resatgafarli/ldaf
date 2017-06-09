@@ -69,6 +69,19 @@ LDAFMessageType::~LDAFMessageType(){
 
 }
 
+const LDAFBase * const LDAFMessageType::getBasicObject() const {
+    return m_basicObject;
+}
+
+const QObject * const LDAFMessageType::getCallBackObject() const{
+    return m_callBackObject;
+}
+
+const QString & LDAFMessageType::getCallBackJSFunc() const{
+    return m_callBackJSFunc;
+}
+
+
 /**/
 LDAFUrl::LDAFUrl(QUrl url, LDAFBase * basicObject, QObject *callBackObject, QString callBackJSFunc):
     LDAFMessageType(basicObject,callBackObject,callBackJSFunc),

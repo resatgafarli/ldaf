@@ -48,7 +48,9 @@ public:
     explicit LDAFMessageType(LDAFBase * basicObject=nullptr, QObject * callBackObject=nullptr, QString callBackJSFunc="");
     virtual ~LDAFMessageType();
     virtual void setMessage()=0;
-
+    const LDAFBase * const getBasicObject() const;
+    const QObject  * const getCallBackObject() const;
+    const QString & getCallBackJSFunc() const;
 protected:
     LDAFBase * m_basicObject;
     QObject * m_callBackObject;
