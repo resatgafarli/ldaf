@@ -20,8 +20,15 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 ############################ Librarry Project Settings #################### 
 # Main Project Definition LDAF Source Code Inclusion
 project(ldaf)
-set (SOURCES  ${SOURCES} ldafmain.cpp ldafbase.cpp ldafbrowser.cpp ldafmediator.cpp)
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
+set (SOURCES  ${SOURCES} 
+    ldafmain.cpp 
+    ldafbase.cpp 
+    ldafbrowser.cpp 
+    ldafmediator.cpp)
+
+set (RESOURCES ldaf.qrc)
+
+add_library(${PROJECT_NAME} SHARED ${SOURCES} ${RESOURCES})
 ############################ End of Main Executable Project Settings ############# 
 
 ######################### Dependency And Link Settings ##########################
