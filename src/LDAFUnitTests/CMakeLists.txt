@@ -21,7 +21,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 # Google Test External Project Settings 
 ExternalProject_Add(googletest
-  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../googletest
+  GIT_REPOSITORY https://github.com/google/googletest
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../googletest_src
   PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/../googletest_distribution
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
 )
@@ -32,17 +33,16 @@ link_directories (${CMAKE_CURRENT_SOURCE_DIR}/../googletest_distribution/lib)
 
 ############################ LDAF Settings ###################################
 # LDAF Source Code Inclusion
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../ldaf/src/LDAF)
-set (SOURCES  ${SOURCES} 
-    ../ldaf/src/LDAF/ldafbase.cpp
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../LDAF)
+set (LDAF_SOURCES 
+    ../LDAF/ldafbase.cpp
 )
  
-
 ############################ Main Executable Project Settings #################### 
 # Main Project Definition LDAF Source Code Inclusion
 project(ldaf_tester)
-set (SOURCES  ${SOURCES} main.cpp tst_ldaf.cpp )
-add_executable(${PROJECT_NAME} ${SOURCES})
+set (TEST_SOURCES tst_main.cpp tst_ldafbase.cpp)
+add_executable(${PROJECT_NAME} ${TEST_SOURCES} ${LDAF_SOURCES})
 ############################ End of Main Executable Project Settings ############# 
 
 ######################### Dependency And Link Settings ##########################

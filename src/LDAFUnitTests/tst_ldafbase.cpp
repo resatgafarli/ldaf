@@ -1,4 +1,4 @@
-#include "tst_ldaf.h"
+#include "tst_ldafbase.h"
 
 using ::testing::AtLeast;
 TEST(LDAFMessageTypeTest, LDAFMessageTypeConstruction){
