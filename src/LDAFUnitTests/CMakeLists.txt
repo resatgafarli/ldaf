@@ -62,5 +62,9 @@ add_custom_command(TARGET ${PROJECT_NAME}
                    POST_BUILD
                    COMMAND ${PROJECT_NAME})
 ######################### End of Testing Section #######################################
-
+######################### Installation Rule
+install (
+	TARGETS ${PROJECT_NAME}
+	RUNTIME DESTINATION ${OUTPUT_DIR}/bin
+)
 

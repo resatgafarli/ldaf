@@ -52,3 +52,7 @@ find_package(Qt5Quick REQUIRED)
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Qml Qt5::Quick)
 ######################### End of Dependency And Link Settings ##########################
 
+install (
+	TARGETS ${PROJECT_NAME}
+	LIBRARY DESTINATION ${OUTPUT_DIR}/lib
+	)
