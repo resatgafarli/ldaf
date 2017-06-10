@@ -66,6 +66,6 @@ add_custom_command(TARGET ${PROJECT_NAME}
 ######################### Installation Rule
 install (
 	TARGETS ${PROJECT_NAME}
-	RUNTIME DESTINATION ${OUTPUT_DIR}/bin/${LDAF_SOLUTION_NAME}
+	RUNTIME DESTINATION /bin/${LDAF_SOLUTION_NAME}
 )
 

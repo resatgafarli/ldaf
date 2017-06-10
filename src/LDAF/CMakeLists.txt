@@ -55,8 +55,8 @@ target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Qml Qt5::Quick)
 
 install (
 	TARGETS ${PROJECT_NAME}
-	LIBRARY DESTINATION ${OUTPUT_DIR}/lib/${LDAF_SOLUTION_NAME}
+	LIBRARY DESTINATION /lib/${LDAF_SOLUTION_NAME}
 	)
 install (FILES ldafmain.h 
-        DESTINATION ${OUTPUT_DIR}/include/${LDAF_SOLUTION_NAME}
+        DESTINATION /include/${LDAF_SOLUTION_NAME}
         )
