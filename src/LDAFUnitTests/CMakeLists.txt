@@ -20,13 +20,12 @@ include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 # Google Test External Project Settings 
 ExternalProject_Add(googletest
   GIT_REPOSITORY https://github.com/google/googletest
-  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../googletest_src
-  PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/../googletest_distribution
+  PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/../googletest
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
 )
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../googletest_distribution/include)
-link_directories (${CMAKE_CURRENT_SOURCE_DIR}/../googletest_distribution/lib)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../googletest/include)
+link_directories (${CMAKE_CURRENT_SOURCE_DIR}/../googletest/lib)
 #################### End of External Projects Settings ########################
 
 ############################ LDAF Settings ###################################
