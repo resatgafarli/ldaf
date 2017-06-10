@@ -32,7 +32,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 ############################ Librarry Project Settings #################### 
 # Main Project Definition LDAF Source Code Inclusion
-project(ldaf)
+project(ldaf VERSION ${LDAF_VERSION})
 set (SOURCES  ${SOURCES} 
     ldafmain.cpp 
     ldafbase.cpp 
@@ -42,6 +42,7 @@ set (SOURCES  ${SOURCES}
 set (RESOURCES ldaf.qrc)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES} ${RESOURCES})
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION  ${LDAF_VERSION} SOVERSION ${LDAF_VERSION_MAJOR})
 ############################ End of Main Executable Project Settings ############# 
 
 ######################### Dependency And Link Settings ##########################
@@ -54,5 +55,8 @@ target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Qml Qt5::Quick)
 
 install (
 	TARGETS ${PROJECT_NAME}
-	LIBRARY DESTINATION ${OUTPUT_DIR}/lib
+	LIBRARY DESTINATION ${OUTPUT_DIR}/lib/${LDAF_SOLUTION_NAME}
 	)
+install (FILES ldafmain.h 
+        DESTINATION ${OUTPUT_DIR}/include/${LDAF_SOLUTION_NAME}
+        )

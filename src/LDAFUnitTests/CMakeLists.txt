@@ -38,9 +38,10 @@ set (LDAF_SOURCES
  
 ############################ Main Executable Project Settings #################### 
 # Main Project Definition LDAF Source Code Inclusion
-project(ldaf_tester)
+project(ldaf_tester VERSION ${LDAF_VERSION})
 set (TEST_SOURCES tst_main.cpp tst_ldafbase.cpp)
 add_executable(${PROJECT_NAME} ${TEST_SOURCES} ${LDAF_SOURCES})
+set_target_properties(${PROJECT_NAME} PROPERTIES VERSION  ${LDAF_VERSION})
 ############################ End of Main Executable Project Settings ############# 
 
 ######################### Dependency And Link Settings ##########################
@@ -65,6 +66,6 @@ add_custom_command(TARGET ${PROJECT_NAME}
 ######################### Installation Rule
 install (
 	TARGETS ${PROJECT_NAME}
-	RUNTIME DESTINATION ${OUTPUT_DIR}/bin
+	RUNTIME DESTINATION ${OUTPUT_DIR}/bin/${LDAF_SOLUTION_NAME}
 )
 
