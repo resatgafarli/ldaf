@@ -9,6 +9,9 @@ License: GPL-3.0
 #include "ldaf_global.h"
 #include <QObject>
 #include <QPointer>
+#include <QJsonDocument>
+#include <QJsonObject>
+
 class LDAFBrowser;
 class LDAFMediator;
 class LDAFCommandListProcessor;
@@ -24,7 +27,11 @@ private:
     QPointer<LDAFCommandListProcessor>  m_mediatorCLP;
     QPointer<LDAFMediator> m_ldafmediator;
     QPointer<LDAFBrowser> m_ldafbrowser;
+    QJsonDocument m_configDoc;
+    QJsonObject m_configuration;
 
+    void generateConfigrationFile();
+    bool loadConfiguration(QString fileName);
 
 signals:
 

@@ -8,4 +8,7 @@
         <file>Close.png</file>
         <file>Reload.png</file>
     </qresource>
+    <qresource prefix="/jsons">
+        <file>config_temp.json</file>
+    </qresource>
 </RCC>
