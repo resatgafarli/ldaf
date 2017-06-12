@@ -29,4 +29,13 @@ public:
   MOCK_METHOD0(setMessage,void());  
 };
 
+class MockLDAFUrl: public LDAFUrl{
+public:
+  explicit MockLDAFUrl(QUrl url, LDAFBase*base,QObject*funcobj,QString funcName):
+  LDAFUrl(url,base,funcobj,funcName)
+  {}
+  MOCK_METHOD0(setMessage,void());  
+};
+
+
 #endif // TST_LDAFBASE_H

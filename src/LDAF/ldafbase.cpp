@@ -101,6 +101,10 @@ LDAFUrl::LDAFUrl(QUrl url, LDAFBase * basicObject, QObject *callBackObject, QStr
 LDAFUrl::~LDAFUrl(){
 
 }
+const QUrl & LDAFUrl::getUrl() const{
+    return m_url;
+}
+
 
 void LDAFUrl::setMessage(){
     if (m_basicObject!=nullptr) m_basicObject->setURLMessage(m_url,m_callBackObject,m_callBackJSFunc);

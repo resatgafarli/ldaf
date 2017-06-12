@@ -68,7 +68,7 @@ public:
     explicit LDAFUrl(QUrl url, LDAFBase * basicObject,QObject* callBackObject, QString callBackJSFunc);
     virtual ~LDAFUrl();
     void setMessage();
-
+    const QUrl & getUrl() const;
 private:
     QUrl m_url;
 };
