@@ -78,7 +78,7 @@ public:
     explicit LDAFJson(QJsonObject jsonobject, LDAFBase * basicObject,QObject * callBackObject, QString callBackJSFunc);
     virtual ~LDAFJson();
     void setMessage();
-
+    const QJsonObject & getJsonObject() const;
 private:
     QJsonObject m_jsonobject;
 };

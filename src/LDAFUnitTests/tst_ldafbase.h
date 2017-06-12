@@ -37,5 +37,13 @@ public:
   MOCK_METHOD0(setMessage,void());  
 };
 
+class MockLDAFJson: public LDAFJson{
+public:
+  explicit MockLDAFJson(QJsonObject jsonObject, LDAFBase*base,QObject*funcobj,QString funcName):
+  LDAFJson(jsonObject,base,funcobj,funcName)
+  {}
+  MOCK_METHOD0(setMessage,void());  
+};
+
 
 #endif // TST_LDAFBASE_H

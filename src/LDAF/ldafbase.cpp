@@ -121,6 +121,10 @@ LDAFJson::~LDAFJson(){
 
 }
 
+const QJsonObject & LDAFJson::getJsonObject() const{
+    return m_jsonobject;
+}
+
 void LDAFJson::setMessage(){
     if (m_basicObject!=nullptr) m_basicObject->setJsonMessage(m_jsonobject,m_callBackObject, m_callBackJSFunc);
 }
