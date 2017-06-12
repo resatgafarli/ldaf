@@ -14,6 +14,7 @@ License: GPL-3.0
 #include <QJsonDocument>
 #include <QPointer>
 #include <QStack>
+#include <QJsonValue>
 
 class LDAFCommandListProcessor;
 
@@ -21,7 +22,8 @@ class LDAFBase:public QObject{
     Q_OBJECT
 public:
 
-   explicit LDAFBase(QObject *parent=0,QPointer<LDAFCommandListProcessor>commandListProcessor=nullptr);
+   explicit LDAFBase(QObject *parent=0,QPointer<LDAFCommandListProcessor>commandListProcessor=nullptr,
+        const QJsonObject & jsonConf=QJsonObject());
    void setReceiverObject(LDAFBase * object);
 
    virtual void setURLMessage(QUrl,QObject * callBackObject,QString) = 0;
@@ -36,8 +38,12 @@ public:
    virtual void reProcessCurrent()const;
    Q_INVOKABLE bool hasNext() const;
    Q_INVOKABLE bool hasPrev() const;
+   Q_INVOKABLE QString getHomePagePath() const;
+   Q_INVOKABLE QString getServerResourcePath() const; 
+   
 
 private:
+    const QJsonObject & m_jsonConf;
     QPointer<LDAFCommandListProcessor> m_commandListProcessor;
     QPointer<LDAFBase> m_object;
 };

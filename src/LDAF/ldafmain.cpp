@@ -21,9 +21,16 @@ LDAFMain::LDAFMain(QObject *parent) : QObject(parent)
 
 }
 void LDAFMain::generateConfigrationFile(){
-    qDebug()<<"Configuration file has not provided. New one has been created."<<endl;
+    qDebug()<<"Configuration file has not provided."<<endl;
+
 
     QFile saveFile("ldaf_config.json");
+
+    if (saveFile.exists()){
+        qWarning("Please provide configration file in argument list.");
+        return;
+    }
+
     if (!saveFile.open(QIODevice::WriteOnly)) {
         qWarning("Couldn't open ldaf_config.json to save.");
         return;
@@ -75,8 +82,8 @@ int LDAFMain::instantiateLdaf(int argc, char *argv[]){
 
     m_browserCLP = new LDAFCommandListProcessor;
     m_mediatorCLP = new LDAFCommandListProcessor;
-    m_ldafmediator = new LDAFMediator(this,m_mediatorCLP);
-    m_ldafbrowser = new LDAFBrowser(this,m_browserCLP);
+    m_ldafmediator = new LDAFMediator(this,m_mediatorCLP,m_configuration);
+    m_ldafbrowser = new LDAFBrowser(this,m_browserCLP,m_configuration);
     m_ldafmediator->setReceiverObject(m_ldafbrowser);
     m_ldafbrowser->setReceiverObject(m_ldafmediator);
     m_ldafbrowser->loadApplicationWindow(args.at(1));

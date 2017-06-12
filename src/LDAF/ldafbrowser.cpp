@@ -14,8 +14,8 @@ License: GPL-3.0
 #include <QQuickItem>
 #include <QFileInfo>
 
-LDAFBrowser::LDAFBrowser(QObject * parent, QPointer<LDAFCommandListProcessor> commandListProcessor) :
-    LDAFBase(parent,commandListProcessor),
+LDAFBrowser::LDAFBrowser(QObject * parent, QPointer<LDAFCommandListProcessor> commandListProcessor,const QJsonObject & jsonConf) :
+    LDAFBase(parent,commandListProcessor,jsonConf),
     m_engine(new QQmlEngine),
     m_component (new QQmlComponent(m_engine)),
     m_appWindowRoot(nullptr)
@@ -23,12 +23,7 @@ LDAFBrowser::LDAFBrowser(QObject * parent, QPointer<LDAFCommandListProcessor> co
     m_engine->rootContext()->setContextProperty("ldafbrowser",this);
 }
 
-QString LDAFBrowser::getHomePagePath()const{
-    return m_homePagePath;
-}
-
 void LDAFBrowser::loadApplicationWindow(QString path){
-    m_homePagePath = path;
     QUrl url("qrc:/ldafbrowser.qml");
     m_component->loadUrl(url);
     while (m_component->isLoading()){}

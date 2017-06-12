@@ -7,9 +7,11 @@ License: GPL-3.0
 #include "ldafbase.h"
 
 /**/
-LDAFBase::LDAFBase(QObject *parent,QPointer<LDAFCommandListProcessor>commandListProcessor):
+LDAFBase::LDAFBase(QObject *parent,QPointer<LDAFCommandListProcessor>commandListProcessor, const QJsonObject & jsonConf):
     QObject(parent),
-    m_commandListProcessor(commandListProcessor){
+    m_commandListProcessor(commandListProcessor),
+    m_jsonConf(jsonConf)
+{
 }
 
 void LDAFBase::setReceiverObject(LDAFBase * object){
@@ -56,6 +58,14 @@ bool LDAFBase::hasPrev() const{
         return false;
 }
 
+
+QString LDAFBase::getServerResourcePath() const{
+    return m_jsonConf["server_resource_root"].toString();
+}
+
+QString LDAFBase::getHomePagePath() const{
+    return m_jsonConf["browser_home_page"].toString();
+}
 
 
 /**/

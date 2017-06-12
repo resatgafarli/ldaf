@@ -13,7 +13,9 @@ class LDAFMediator : public LDAFBase
 {
     Q_OBJECT
 public:
-    explicit LDAFMediator(QObject *parent = 0, QPointer<LDAFCommandListProcessor> commandListProcessor=nullptr);
+    explicit LDAFMediator(QObject *parent = 0, QPointer<LDAFCommandListProcessor> commandListProcessor=nullptr,
+    const QJsonObject & jsonConf=QJsonObject());
+
 private:
     QUrl m_baseUrl;
     void setURLMessage(QUrl, QObject *callBackObject, QString callBackJSFunc);

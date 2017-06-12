@@ -8,18 +8,17 @@ License: GPL-3.0
 #include <QDebug>
 #include <QDir>
 
-LDAFMediator::LDAFMediator(QObject *parent, QPointer<LDAFCommandListProcessor> commandListProcessor) :
-    LDAFBase(parent,commandListProcessor),
-    m_baseUrl(QDir::currentPath())
+LDAFMediator::LDAFMediator(QObject *parent, QPointer<LDAFCommandListProcessor> commandListProcessor,
+    const QJsonObject & jsonConf) :
+    LDAFBase(parent,commandListProcessor,jsonConf)
 {
     //Convert local file based url to network based url
+    m_baseUrl.setPath(getServerResourcePath());
     m_baseUrl = m_baseUrl.fromLocalFile(m_baseUrl.path());
 }
 
 void LDAFMediator::setURLMessage(QUrl url,QObject * callBackObject, QString callBackJSFunc){
     qDebug()<<callBackObject<<endl;
-
-
     QUrl resolvedUrl(m_baseUrl.resolved(url));
     addCommand(resolvedUrl,callBackObject,callBackJSFunc);
     processForwardByOne();
