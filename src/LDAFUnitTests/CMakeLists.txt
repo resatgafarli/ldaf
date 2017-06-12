@@ -8,8 +8,6 @@ cmake_minimum_required(VERSION 3.8.2)
 #First install QT and set bin path to PATH list
 #Be shure insalled sudo apt-get install mesa-common-dev
 #The build and install cmake from source ./bootstrap --qt-gui, make, make install
-#QT_DIR  - root directory (bin,libs,include) where qt is installed. 
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${QT_DIR}})
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 ################# End of Qt AUTOMOC SETTINGS #######################
