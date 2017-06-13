@@ -32,6 +32,9 @@ public:
     bool isActiveQueueEmpty() const;
     bool isProcessedStackEmpty() const;
 
+    const QQueue<LDAFCommand*> & getActiveCommandQueue() const;
+    const QStack<LDAFCommand*> & getProcessedStack () const;
+
 private:
     void addUrlMessage(QUrl & message, LDAFBase * toObject, QObject *callBackObject, QString callBackJSFunc);
     void addJsonObjectMessage(QJsonObject & message, LDAFBase * toObject, QObject *callBackObject, QString callBackJSFunc);

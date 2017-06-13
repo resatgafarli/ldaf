@@ -160,6 +160,16 @@ LDAFCommandListProcessor::LDAFCommandListProcessor(QObject * parent):
     m_currentCommand(nullptr)
 {}
 
+const QQueue<LDAFCommand*> & LDAFCommandListProcessor::getActiveCommandQueue() const{
+    return m_activeQueue;
+}
+
+
+const QStack<LDAFCommand*> & LDAFCommandListProcessor::getProcessedStack () const{
+    return m_processedStack;
+}
+
+
 void LDAFCommandListProcessor::addCommand(QUrl message, LDAFBase * toObject, QObject * callBackObject,QString callBackJSFunc)
 {
     addUrlMessage(message,toObject,callBackObject,callBackJSFunc);
