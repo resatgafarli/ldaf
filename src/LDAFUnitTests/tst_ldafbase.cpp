@@ -3,14 +3,23 @@
 using ::testing::AtLeast;
 
 /*--------------------------  LDAFCallBackObject -----------------------------------*/
-TEST(LDAFCallBackObject, LDAFCallBackObjectConstruction){
+TEST(LDAFCallBackObjectTest, LDAFCallBackObjectConstruction){
   MockQObject * object = new MockQObject();
   LDAFCallBackObject callBackObject(object,"TestFunction");
 
   EXPECT_EQ(callBackObject.getCallBackObject(),object);
   EXPECT_EQ(callBackObject.getCallBackFunction(),"TestFunction");
-
 }
+
+TEST(LDAFCallBackObjectTest, LDAFCallBackObjectCopy){
+  MockQObject * object = new MockQObject();
+  LDAFCallBackObject callBackObject(object,"TestFunction");
+  LDAFCallBackObject copyCallBackObject = callBackObject; 
+
+  EXPECT_EQ(copyCallBackObject.getCallBackObject(),object);
+  EXPECT_EQ(copyCallBackObject.getCallBackFunction(),"TestFunction");
+}
+
 
 /*----------------------------- LDAFMessage Types --------------------------------- */
 TEST(LDAFMessageTypeTest, LDAFMessageTypeConstruction){
