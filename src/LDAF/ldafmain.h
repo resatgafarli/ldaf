@@ -11,7 +11,6 @@ License: GPL-3.0
 #include <QPointer>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include "ldafbase.h"
 
 class LDAFBrowser;
 class LDAFMediator;
