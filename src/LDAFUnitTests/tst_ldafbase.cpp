@@ -62,12 +62,22 @@ TEST(LDAFCommandTest,LDAFCommandExection){
     EXPECT_EQ(ldafCommand.getFunctionPointer(),&LDAFMessageType::setMessage);     
 }
 
-TEST(LDAFCommandTest,LDAFCommandUrlExection){
+TEST(LDAFCommandTest,LDAFCommandUrlExecution){
     MockLDAFBase mockLDAFbase;
     MockQObject mockQObject;
     MockLDAFUrl * urlMessage = new MockLDAFUrl(QUrl(),&mockLDAFbase,&mockQObject,"testFunction");
     LDAFCommand ldafCommand(urlMessage,&LDAFMessageType::setMessage);
     
     EXPECT_CALL(*urlMessage,setMessage()).Times(AtLeast(1));
+    ldafCommand.executeCommand();
+}
+
+TEST(LDAFCommandTest,LDAFCommandJsonExecution){
+    MockLDAFBase mockLDAFbase;
+    MockQObject mockQObject;
+    MockLDAFJson * jsonMessage = new MockLDAFJson(QJsonObject(),&mockLDAFbase,&mockQObject,"testFunction");
+    LDAFCommand ldafCommand(jsonMessage,&LDAFMessageType::setMessage);
+    
+    EXPECT_CALL(*jsonMessage,setMessage()).Times(AtLeast(1));
     ldafCommand.executeCommand();
 }
