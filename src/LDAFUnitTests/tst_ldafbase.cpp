@@ -41,7 +41,7 @@ TEST(LDAFJsonTypeTest, LDAFJsonTypeConstruction){
 TEST(LDAFCommandTest,LDAFCommandConstruction){
     MockLDAFBase mockLDAFbase;
     MockQObject mockQObject;
-    MockLDAFMessageType * messageType = new MockLDAFMessageType(&mockLDAFbase,&mockQObject,"testFunction");
+    MockLDAFMessageType * messageType = new MockLDAFMessageType(&mockLDAFbase,&mockQObject,QString());
     
     MockLDAFCommand ldafCommand(messageType,&LDAFMessageType::setMessage);
     EXPECT_EQ(ldafCommand.getMessageObject(),messageType);
@@ -50,7 +50,7 @@ TEST(LDAFCommandTest,LDAFCommandConstruction){
 TEST(LDAFCommandTest,LDAFCommandExection){
     MockLDAFBase mockLDAFbase;
     MockQObject mockQObject;
-    MockLDAFMessageType * messageType = new MockLDAFMessageType(&mockLDAFbase,&mockQObject,"testFunction");
+    MockLDAFMessageType * messageType = new MockLDAFMessageType(&mockLDAFbase,&mockQObject,QString());
     EXPECT_CALL(*messageType,setMessage()).Times(AtLeast(3));
 
     MockLDAFCommand ldafCommand(messageType,&LDAFMessageType::setMessage);
@@ -65,7 +65,7 @@ TEST(LDAFCommandTest,LDAFCommandExection){
 TEST(LDAFCommandTest,LDAFCommandUrlExecution){
     MockLDAFBase mockLDAFbase;
     MockQObject mockQObject;
-    MockLDAFUrl * urlMessage = new MockLDAFUrl(QUrl(),&mockLDAFbase,&mockQObject,"testFunction");
+    MockLDAFUrl * urlMessage = new MockLDAFUrl(QUrl(),&mockLDAFbase,&mockQObject,QString());
     LDAFCommand ldafCommand(urlMessage,&LDAFMessageType::setMessage);
     
     EXPECT_CALL(*urlMessage,setMessage()).Times(AtLeast(1));
@@ -75,7 +75,7 @@ TEST(LDAFCommandTest,LDAFCommandUrlExecution){
 TEST(LDAFCommandTest,LDAFCommandJsonExecution){
     MockLDAFBase mockLDAFbase;
     MockQObject mockQObject;
-    MockLDAFJson * jsonMessage = new MockLDAFJson(QJsonObject(),&mockLDAFbase,&mockQObject,"testFunction");
+    MockLDAFJson * jsonMessage = new MockLDAFJson(QJsonObject(),&mockLDAFbase,&mockQObject,QString());
     LDAFCommand ldafCommand(jsonMessage,&LDAFMessageType::setMessage);
     
     EXPECT_CALL(*jsonMessage,setMessage()).Times(AtLeast(1));
