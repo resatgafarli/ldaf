@@ -21,7 +21,7 @@ public:
     explicit LDAFBrowser(QObject * parent, const QJsonObject & jsonConf=QJsonObject());
     void loadApplicationWindow(QString);
 
-    Q_INVOKABLE void openPage(QString path, QObject * callBackObject,  QString callBackJSFunc);
+    Q_INVOKABLE void openPage(QString path, QObject * callBackObject, QString callBackJSFunc);
     Q_INVOKABLE void reloadCurrent();
     Q_INVOKABLE void nextPage();
     Q_INVOKABLE void prevPage();
@@ -31,8 +31,8 @@ private:
     QPointer<QQmlComponent> m_component;
     QPointer<QObject> m_appWindowRoot;
 
-    void setURLMessage(QUrl,QObject*,QString);
-    void setJsonMessage(QJsonObject,QObject*,QString);
+    void setURLMessage(QUrl,LDAFCallBackObject callBackObject);
+    void setJsonMessage(QJsonObject,LDAFCallBackObject callBackObject);
 
 };
 

@@ -15,14 +15,13 @@ LDAFMediator::LDAFMediator(QObject *parent, const QJsonObject & jsonConf) :  LDA
     m_baseUrl = m_baseUrl.fromLocalFile(m_baseUrl.path());
 }
 
-void LDAFMediator::setURLMessage(QUrl url,QObject * callBackObject, QString callBackJSFunc){
-    qDebug()<<callBackObject<<endl;
+void LDAFMediator::setURLMessage(QUrl url,LDAFCallBackObject callBackObject){
     QUrl resolvedUrl(m_baseUrl.resolved(url));
-    addCommand(resolvedUrl,callBackObject,callBackJSFunc);
+    addCommand(resolvedUrl,callBackObject);
     processForwardByOne();
 }
 
-void LDAFMediator::setJsonMessage(QJsonObject jsonObject, QObject *callBackObject, QString callBackJSFunc){
+void LDAFMediator::setJsonMessage(QJsonObject jsonObject, LDAFCallBackObject callBackObject){
     QJsonDocument doc(jsonObject);
     qDebug()<<"JSON received from browser"<<this<<doc.toJson()<<endl;
 

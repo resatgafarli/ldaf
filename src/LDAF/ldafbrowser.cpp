@@ -32,9 +32,9 @@ void LDAFBrowser::loadApplicationWindow(QString path){
      }
 }
 
-void LDAFBrowser::setURLMessage(QUrl url, QObject * callBackObject, QString callBackJSFunc){
+void LDAFBrowser::setURLMessage(QUrl url,LDAFCallBackObject callBackObject){
 
-    if (callBackObject == nullptr){
+    if (callBackObject.getObjectPointer() == nullptr){
         qDebug()<<"Callback object is invalid"<<endl;
         return;
     }
@@ -42,7 +42,7 @@ void LDAFBrowser::setURLMessage(QUrl url, QObject * callBackObject, QString call
     QVariant returnedValue;
     QFile file (url.path());
     if (file.exists()){
-            QMetaObject::invokeMethod(callBackObject, callBackJSFunc.toUtf8().data(),
+            QMetaObject::invokeMethod(callBackObject.getObjectPointer(), callBackObject.getFunctionName().toUtf8().data(),
               Q_RETURN_ARG(QVariant, returnedValue),
               Q_ARG(QVariant, url));
     }else {
@@ -51,7 +51,7 @@ void LDAFBrowser::setURLMessage(QUrl url, QObject * callBackObject, QString call
 
 }
 
-void LDAFBrowser::setJsonMessage(QJsonObject jsonObject, QObject * callBackObject, QString callBackJSFunc){
+void LDAFBrowser::setJsonMessage(QJsonObject jsonObject, LDAFCallBackObject callBackObject){
     QJsonDocument doc(jsonObject);
     qDebug()<<"JSON received from mediator"<<this<<doc.toJson()<<endl;
 }
@@ -59,7 +59,8 @@ void LDAFBrowser::setJsonMessage(QJsonObject jsonObject, QObject * callBackObjec
 void LDAFBrowser::openPage(QString path, QObject * callBackObject, QString callBackJSFunc){
     QUrl url;
     url.setPath(path);
-    addCommand(url,callBackObject,callBackJSFunc);
+    LDAFCallBackObject backObject(callBackObject,callBackJSFunc);
+    addCommand(url,backObject);
     processForwardByOne();
 }
 

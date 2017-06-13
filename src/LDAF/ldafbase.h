@@ -21,15 +21,15 @@ class LDAFCommand;
 
 class LDAFCallBackObject{
 public:
-    explicit LDAFCallBackObject(QObject * callBackObject, QString callBackJSFunc):
+    explicit LDAFCallBackObject(QObject * callBackObject=nullptr, QString callBackJSFunc=""):
         m_callBackObject(callBackObject),
         m_callBackJSFunc(callBackJSFunc)
         {}
 
-    const QObject * const getCallBackObject() const{
+    QObject * getObjectPointer() const{
         return m_callBackObject;
     }
-    const QString & getCallBackFunction() const{
+    const QString & getFunctionName() const{
         return m_callBackJSFunc;
     }
     
@@ -41,8 +41,8 @@ private:
 class LDAFCommandListProcessor:public QObject {
 public:
     LDAFCommandListProcessor(QObject * parent=nullptr);
-    void addCommand(QUrl message, LDAFBase * toObject,QObject *callBackObject, QString callBackJSFunc);
-    void addCommand(QJsonObject message, LDAFBase * toObject, QObject *callBackObject, QString callBackJSFunc);
+    void addCommand(QUrl message, LDAFBase * toObject, LDAFCallBackObject callBackObject);
+    void addCommand(QJsonObject message, LDAFBase * toObject, LDAFCallBackObject callBackObject);
     void processForwardByOne();
     void processBackwardByOne();
     void processAllForward();
@@ -55,8 +55,8 @@ public:
     const QStack<LDAFCommand*> & getProcessedStack () const;
 
 private:
-    void addUrlMessage(QUrl & message, LDAFBase * toObject, QObject *callBackObject, QString callBackJSFunc);
-    void addJsonObjectMessage(QJsonObject & message, LDAFBase * toObject, QObject *callBackObject, QString callBackJSFunc);
+    void addUrlMessage(QUrl & message, LDAFBase * toObject, LDAFCallBackObject callBackObject);
+    void addJsonObjectMessage(QJsonObject & message, LDAFBase * toObject, LDAFCallBackObject callBackObject);
     LDAFCommand* m_currentCommand;
     QQueue<LDAFCommand*> m_activeQueue;
     QStack<LDAFCommand*> m_processedStack;
@@ -70,11 +70,11 @@ public:
    explicit LDAFBase(QObject *parent=0, const QJsonObject & jsonConf=QJsonObject());
    void setReceiverObject(LDAFBase * object);
 
-   virtual void setURLMessage(QUrl,QObject * callBackObject,QString) = 0;
-   virtual void setJsonMessage(QJsonObject,QObject * callBackObject, QString) = 0;
+   virtual void setURLMessage(QUrl, LDAFCallBackObject callBackObject) = 0;
+   virtual void setJsonMessage(QJsonObject, LDAFCallBackObject callBackObject) = 0;
 
-   virtual void addCommand(QUrl url, QObject * callBackObject, QString callBackJSFunc);
-   virtual void addCommand(QJsonObject jsonObject, QObject *callBackObject, QString callBackJSFunc);
+   virtual void addCommand(QUrl url, LDAFCallBackObject callBackObject);
+   virtual void addCommand(QJsonObject jsonObject, LDAFCallBackObject callBackObject);
    virtual void processForwardByOne();
    virtual void processBackwardByOne();
    virtual void processAllForward();
@@ -95,21 +95,21 @@ private:
 
 class LDAFMessageType{
 public:
-    explicit LDAFMessageType(LDAFBase * basicObject=nullptr, QObject * callBackObject=nullptr, QString callBackJSFunc="");
+    explicit LDAFMessageType(LDAFBase * basicObject=nullptr, LDAFCallBackObject callBackObject=LDAFCallBackObject());
     virtual ~LDAFMessageType();
     virtual void setMessage()=0;
+
     const LDAFBase * const getBasicObject() const;
-    const QObject  * const getCallBackObject() const;
-    const QString & getCallBackJSFunc() const;
+    const LDAFCallBackObject & getCallBackObject() const;
+
 protected:
-    LDAFBase * m_basicObject;
-    QObject * m_callBackObject;
-    QString m_callBackJSFunc;
+   LDAFBase * m_basicObject;
+   LDAFCallBackObject m_callBackObject;
 };
 
 class LDAFUrl:public LDAFMessageType{
 public:
-    explicit LDAFUrl(QUrl url, LDAFBase * basicObject,QObject* callBackObject, QString callBackJSFunc);
+    explicit LDAFUrl(QUrl url, LDAFBase * basicObject,LDAFCallBackObject callBackObject);
     virtual ~LDAFUrl();
     void setMessage();
     const QUrl & getUrl() const;
@@ -119,7 +119,7 @@ private:
 
 class LDAFJson:public LDAFMessageType{
 public:
-    explicit LDAFJson(QJsonObject jsonobject, LDAFBase * basicObject,QObject * callBackObject, QString callBackJSFunc);
+    explicit LDAFJson(QJsonObject jsonobject, LDAFBase * basicObject, LDAFCallBackObject callBackObject);
     virtual ~LDAFJson();
     void setMessage();
     const QJsonObject & getJsonObject() const;

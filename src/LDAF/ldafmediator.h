@@ -17,8 +17,8 @@ public:
 
 private:
     QUrl m_baseUrl;
-    void setURLMessage(QUrl, QObject *callBackObject, QString callBackJSFunc);
-    void setJsonMessage(QJsonObject, QObject *callBackObject, QString callBackJSFunc);
+    void setURLMessage(QUrl, LDAFCallBackObject callBackObject);
+    void setJsonMessage(QJsonObject, LDAFCallBackObject callBackObject);
 };
 
 #endif // LDAFMEDIATOR_H

@@ -16,30 +16,30 @@ class MockQObject:public QObject{
 class MockLDAFBase:public LDAFBase{
 public:
    
-   MOCK_METHOD3(setURLMessage,void(QUrl, QObject * , QString));
-   MOCK_METHOD3(setJsonMessage,void(QJsonObject, QObject * , QString));
+   MOCK_METHOD2(setURLMessage,void(QUrl, LDAFCallBackObject));
+   MOCK_METHOD2(setJsonMessage,void(QJsonObject, LDAFCallBackObject));
 };
 
 class MockLDAFMessageType: public LDAFMessageType{
 public:
-  explicit MockLDAFMessageType(LDAFBase*base,QObject*funcobj,QString funcName):
-  LDAFMessageType(base,funcobj,funcName)
+  explicit MockLDAFMessageType(LDAFBase* base,LDAFCallBackObject callBackObject):
+  LDAFMessageType(base,callBackObject)
   {}
   MOCK_METHOD0(setMessage,void());  
 };
 
 class MockLDAFUrl: public LDAFUrl{
 public:
-  explicit MockLDAFUrl(QUrl url, LDAFBase*base,QObject*funcobj,QString funcName):
-  LDAFUrl(url,base,funcobj,funcName)
+  explicit MockLDAFUrl(QUrl url, LDAFBase*base,LDAFCallBackObject callBackObject):
+  LDAFUrl(url,base,callBackObject)
   {}
   MOCK_METHOD0(setMessage,void());  
 };
 
 class MockLDAFJson: public LDAFJson{
 public:
-  explicit MockLDAFJson(QJsonObject jsonObject, LDAFBase*base,QObject*funcobj,QString funcName):
-  LDAFJson(jsonObject,base,funcobj,funcName)
+  explicit MockLDAFJson(QJsonObject jsonObject, LDAFBase*base,LDAFCallBackObject callBackObject):
+  LDAFJson(jsonObject,base,callBackObject)
   {}
   MOCK_METHOD0(setMessage,void());  
 };

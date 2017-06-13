@@ -16,12 +16,12 @@ LDAFBase::LDAFBase(QObject *parent, const QJsonObject & jsonConf):
 void LDAFBase::setReceiverObject(LDAFBase * object){
      m_object = object;
  }
-void LDAFBase::addCommand(QUrl url, QObject *callBackObject, QString callBackJSFunc) {
-    m_commandListProcessor.addCommand(url,m_object,callBackObject,callBackJSFunc);
+void LDAFBase::addCommand(QUrl url, LDAFCallBackObject callBackObject) {
+    m_commandListProcessor.addCommand(url,m_object,callBackObject);
  }
 
-void LDAFBase::addCommand(QJsonObject jsonObject, QObject *callBackObject, QString callBackJSFunc){
-    m_commandListProcessor.addCommand(jsonObject,m_object,callBackObject,callBackJSFunc);
+void LDAFBase::addCommand(QJsonObject jsonObject, LDAFCallBackObject callBackObject){
+    m_commandListProcessor.addCommand(jsonObject,m_object,callBackObject);
 }
 
 void LDAFBase::processForwardByOne(){
@@ -68,12 +68,12 @@ QString LDAFBase::getHomePagePath() const{
 
 
 /*LDAFMessageType*/
-LDAFMessageType::LDAFMessageType(LDAFBase * basicObject,QObject * callBackObject,QString callBackJSFunc):
+LDAFMessageType::LDAFMessageType(LDAFBase * basicObject, LDAFCallBackObject callBackObject):
     m_basicObject(basicObject),
-    m_callBackObject(callBackObject),
-    m_callBackJSFunc(callBackJSFunc){
+    m_callBackObject(callBackObject){
 
 }
+
 LDAFMessageType::~LDAFMessageType(){
 
 }
@@ -82,18 +82,14 @@ const LDAFBase * const LDAFMessageType::getBasicObject() const {
     return m_basicObject;
 }
 
-const QObject * const LDAFMessageType::getCallBackObject() const{
+const LDAFCallBackObject & LDAFMessageType::getCallBackObject() const{
     return m_callBackObject;
-}
-
-const QString & LDAFMessageType::getCallBackJSFunc() const{
-    return m_callBackJSFunc;
 }
 
 
 /*LDAFUrl*/
-LDAFUrl::LDAFUrl(QUrl url, LDAFBase * basicObject, QObject *callBackObject, QString callBackJSFunc):
-    LDAFMessageType(basicObject,callBackObject,callBackJSFunc),
+LDAFUrl::LDAFUrl(QUrl url, LDAFBase * basicObject, LDAFCallBackObject callBackObject):
+    LDAFMessageType(basicObject,callBackObject),
     m_url(url){
 
 }
@@ -106,13 +102,13 @@ const QUrl & LDAFUrl::getUrl() const{
 
 
 void LDAFUrl::setMessage(){
-    if (m_basicObject!=nullptr) m_basicObject->setURLMessage(m_url,m_callBackObject,m_callBackJSFunc);
+    if (m_basicObject!=nullptr) m_basicObject->setURLMessage(m_url,m_callBackObject);
 }
 
 /*LDAFJson*/
 
-LDAFJson::LDAFJson(QJsonObject jsonobject, LDAFBase * basicObject,QObject * callBackObject,QString callBackJSFunc):
-    LDAFMessageType(basicObject,callBackObject,callBackJSFunc),
+LDAFJson::LDAFJson(QJsonObject jsonobject, LDAFBase * basicObject, LDAFCallBackObject callBackObject):
+    LDAFMessageType(basicObject,callBackObject),
     m_jsonobject(jsonobject){
 
 }
@@ -125,7 +121,7 @@ const QJsonObject & LDAFJson::getJsonObject() const{
 }
 
 void LDAFJson::setMessage(){
-    if (m_basicObject!=nullptr) m_basicObject->setJsonMessage(m_jsonobject,m_callBackObject, m_callBackJSFunc);
+    if (m_basicObject!=nullptr) m_basicObject->setJsonMessage(m_jsonobject,m_callBackObject);
 }
 
 /*LDAFCommand*/
@@ -170,14 +166,14 @@ const QStack<LDAFCommand*> & LDAFCommandListProcessor::getProcessedStack () cons
 }
 
 
-void LDAFCommandListProcessor::addCommand(QUrl message, LDAFBase * toObject, QObject * callBackObject,QString callBackJSFunc)
+void LDAFCommandListProcessor::addCommand(QUrl message, LDAFBase * toObject, LDAFCallBackObject callBackObject)
 {
-    addUrlMessage(message,toObject,callBackObject,callBackJSFunc);
+    addUrlMessage(message,toObject,callBackObject);
 }
 
-void LDAFCommandListProcessor::addCommand(QJsonObject message, LDAFBase * toObject,QObject * callBackObject, QString callBackJSFunc)
+void LDAFCommandListProcessor::addCommand(QJsonObject message, LDAFBase * toObject, LDAFCallBackObject callBackObject)
 {
-    addJsonObjectMessage(message,toObject,callBackObject,callBackJSFunc);
+    addJsonObjectMessage(message,toObject,callBackObject);
 }
 
 void LDAFCommandListProcessor::processForwardByOne(){
@@ -223,12 +219,12 @@ void LDAFCommandListProcessor::processAllBackward(){
     }
 }
 
-void LDAFCommandListProcessor::addUrlMessage(QUrl & message, LDAFBase * toObject, QObject * callBackObject, QString callBackJSFunc){
-    m_activeQueue.enqueue(new LDAFCommand(new LDAFUrl(message,toObject,callBackObject,callBackJSFunc), &LDAFMessageType::setMessage));
+void LDAFCommandListProcessor::addUrlMessage(QUrl & message, LDAFBase * toObject, LDAFCallBackObject callBackObject){
+    m_activeQueue.enqueue(new LDAFCommand(new LDAFUrl(message,toObject,callBackObject), &LDAFMessageType::setMessage));
 }
 
-void LDAFCommandListProcessor::addJsonObjectMessage(QJsonObject & message, LDAFBase * toObject, QObject *callBackObject, QString callBackJSFunc){
-    m_activeQueue.enqueue(new LDAFCommand(new LDAFJson(message,toObject,callBackObject,callBackJSFunc), &LDAFMessageType::setMessage));
+void LDAFCommandListProcessor::addJsonObjectMessage(QJsonObject & message, LDAFBase * toObject, LDAFCallBackObject callBackObject){
+    m_activeQueue.enqueue(new LDAFCommand(new LDAFJson(message,toObject,callBackObject), &LDAFMessageType::setMessage));
 }
 
 bool LDAFCommandListProcessor::isActiveQueueEmpty() const{
