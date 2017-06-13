@@ -59,5 +59,6 @@ TEST(LDAFCommandTest,LDAFCommandExection){
     ldafCommand.executeCommand();//2
     
     EXPECT_EQ(ldafCommand.getMessageObject(),messageType);
+    EXPECT_EQ(ldafCommand.getFunctionPointer(),&LDAFMessageType::setMessage);
         
 }
