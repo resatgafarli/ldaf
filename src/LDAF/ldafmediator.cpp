@@ -8,9 +8,7 @@ License: GPL-3.0
 #include <QDebug>
 #include <QDir>
 
-LDAFMediator::LDAFMediator(QObject *parent, QPointer<LDAFCommandListProcessor> commandListProcessor,
-    const QJsonObject & jsonConf) :
-    LDAFBase(parent,commandListProcessor,jsonConf)
+LDAFMediator::LDAFMediator(QObject *parent, const QJsonObject & jsonConf) :  LDAFBase(parent,jsonConf)
 {
     //Convert local file based url to network based url
     m_baseUrl.setPath(getServerResourcePath());

@@ -14,8 +14,7 @@ License: GPL-3.0
 #include <QQuickItem>
 #include <QFileInfo>
 
-LDAFBrowser::LDAFBrowser(QObject * parent, QPointer<LDAFCommandListProcessor> commandListProcessor,const QJsonObject & jsonConf) :
-    LDAFBase(parent,commandListProcessor,jsonConf),
+LDAFBrowser::LDAFBrowser(QObject * parent, const QJsonObject & jsonConf) : LDAFBase(parent,jsonConf),
     m_engine(new QQmlEngine),
     m_component (new QQmlComponent(m_engine)),
     m_appWindowRoot(nullptr)

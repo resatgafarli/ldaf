@@ -11,10 +11,11 @@ License: GPL-3.0
 #include <QPointer>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include "ldafbase.h"
 
 class LDAFBrowser;
 class LDAFMediator;
-class LDAFCommandListProcessor;
+
 
 class LDAFSHARED_EXPORT LDAFMain : public QObject
 {
@@ -23,8 +24,6 @@ public:
     explicit LDAFMain(QObject *parent = 0);
     int instantiateLdaf(int argc, char *argv[]);
 private:
-    QPointer<LDAFCommandListProcessor>  m_browserCLP;
-    QPointer<LDAFCommandListProcessor>  m_mediatorCLP;
     QPointer<LDAFMediator> m_ldafmediator;
     QPointer<LDAFBrowser> m_ldafbrowser;
     QJsonDocument m_configDoc;

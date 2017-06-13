@@ -16,14 +16,36 @@ License: GPL-3.0
 #include <QStack>
 #include <QJsonValue>
 
-class LDAFCommandListProcessor;
+class LDAFBase; 
+class LDAFCommand; 
+
+class LDAFCommandListProcessor:public QObject {
+public:
+    LDAFCommandListProcessor(QObject * parent=nullptr);
+    void addCommand(QUrl message, LDAFBase * toObject,QObject *callBackObject, QString callBackJSFunc);
+    void addCommand(QJsonObject message, LDAFBase * toObject, QObject *callBackObject, QString callBackJSFunc);
+    void processForwardByOne();
+    void processBackwardByOne();
+    void processAllForward();
+    void processAllBackward();
+    void reProcessCurrent() const;
+    bool isActiveQueueEmpty() const;
+    bool isProcessedStackEmpty() const;
+
+private:
+    void addUrlMessage(QUrl & message, LDAFBase * toObject, QObject *callBackObject, QString callBackJSFunc);
+    void addJsonObjectMessage(QJsonObject & message, LDAFBase * toObject, QObject *callBackObject, QString callBackJSFunc);
+    LDAFCommand* m_currentCommand;
+    QQueue<LDAFCommand*> m_activeQueue;
+    QStack<LDAFCommand*> m_processedStack;
+
+};
 
 class LDAFBase:public QObject{
     Q_OBJECT
 public:
 
-   explicit LDAFBase(QObject *parent=0,QPointer<LDAFCommandListProcessor>commandListProcessor=nullptr,
-        const QJsonObject & jsonConf=QJsonObject());
+   explicit LDAFBase(QObject *parent=0, const QJsonObject & jsonConf=QJsonObject());
    void setReceiverObject(LDAFBase * object);
 
    virtual void setURLMessage(QUrl,QObject * callBackObject,QString) = 0;
@@ -44,7 +66,7 @@ public:
 
 private:
     const QJsonObject & m_jsonConf;
-    QPointer<LDAFCommandListProcessor> m_commandListProcessor;
+    LDAFCommandListProcessor m_commandListProcessor;
     QPointer<LDAFBase> m_object;
 };
 
@@ -98,27 +120,7 @@ private:
 };
 
 
-class LDAFCommandListProcessor:public QObject {
-public:
-    LDAFCommandListProcessor(QObject * parent=nullptr);
-    void addCommand(QUrl message, LDAFBase * toObject,QObject *callBackObject, QString callBackJSFunc);
-    void addCommand(QJsonObject message, LDAFBase * toObject, QObject *callBackObject, QString callBackJSFunc);
-    void processForwardByOne();
-    void processBackwardByOne();
-    void processAllForward();
-    void processAllBackward();
-    void reProcessCurrent() const;
-    bool isActiveQueueEmpty() const;
-    bool isProcessedStackEmpty() const;
 
-private:
-    void addUrlMessage(QUrl & message, LDAFBase * toObject, QObject *callBackObject, QString callBackJSFunc);
-    void addJsonObjectMessage(QJsonObject & message, LDAFBase * toObject, QObject *callBackObject, QString callBackJSFunc);
-    LDAFCommand* m_currentCommand;
-    QQueue<LDAFCommand*> m_activeQueue;
-    QStack<LDAFCommand*> m_processedStack;
-
-};
 
 #endif // LDAFBASE_H
 

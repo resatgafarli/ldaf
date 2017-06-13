@@ -18,8 +18,7 @@ class LDAFBrowser : public LDAFBase
 {
     Q_OBJECT
 public:
-    explicit LDAFBrowser(QObject * parent, QPointer<LDAFCommandListProcessor> commandListProcessor=nullptr,
-    const QJsonObject & jsonConf=QJsonObject());
+    explicit LDAFBrowser(QObject * parent, const QJsonObject & jsonConf=QJsonObject());
     void loadApplicationWindow(QString);
 
     Q_INVOKABLE void openPage(QString path, QObject * callBackObject,  QString callBackJSFunc);

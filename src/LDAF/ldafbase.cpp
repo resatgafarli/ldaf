@@ -7,9 +7,8 @@ License: GPL-3.0
 #include "ldafbase.h"
 
 /*LDAFBase*/
-LDAFBase::LDAFBase(QObject *parent,QPointer<LDAFCommandListProcessor>commandListProcessor, const QJsonObject & jsonConf):
+LDAFBase::LDAFBase(QObject *parent, const QJsonObject & jsonConf):
     QObject(parent),
-    m_commandListProcessor(commandListProcessor),
     m_jsonConf(jsonConf)
 {
 }
@@ -18,41 +17,41 @@ void LDAFBase::setReceiverObject(LDAFBase * object){
      m_object = object;
  }
 void LDAFBase::addCommand(QUrl url, QObject *callBackObject, QString callBackJSFunc) {
-    m_commandListProcessor->addCommand(url,m_object,callBackObject,callBackJSFunc);
+    m_commandListProcessor.addCommand(url,m_object,callBackObject,callBackJSFunc);
  }
 
 void LDAFBase::addCommand(QJsonObject jsonObject, QObject *callBackObject, QString callBackJSFunc){
-    m_commandListProcessor->addCommand(jsonObject,m_object,callBackObject,callBackJSFunc);
+    m_commandListProcessor.addCommand(jsonObject,m_object,callBackObject,callBackJSFunc);
 }
 
 void LDAFBase::processForwardByOne(){
-     m_commandListProcessor->processForwardByOne();
+     m_commandListProcessor.processForwardByOne();
 }
 
 void LDAFBase::processBackwardByOne(){
-    m_commandListProcessor->processBackwardByOne();
+    m_commandListProcessor.processBackwardByOne();
 }
 
 void LDAFBase::processAllForward(){
-    m_commandListProcessor->processAllForward();
+    m_commandListProcessor.processAllForward();
 }
 
 void LDAFBase::processAllBackward(){
-    m_commandListProcessor->processAllBackward();
+    m_commandListProcessor.processAllBackward();
 }
 void LDAFBase::reProcessCurrent()const{
-    m_commandListProcessor->reProcessCurrent();
+    m_commandListProcessor.reProcessCurrent();
 }
 
 bool LDAFBase::hasNext() const{
-    if (!m_commandListProcessor->isActiveQueueEmpty())
+    if (!m_commandListProcessor.isActiveQueueEmpty())
         return true;
     else
         return false;
 }
 
 bool LDAFBase::hasPrev() const{
-    if (!m_commandListProcessor->isProcessedStackEmpty())
+    if (!m_commandListProcessor.isProcessedStackEmpty())
         return true;
     else
         return false;

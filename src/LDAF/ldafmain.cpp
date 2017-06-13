@@ -80,10 +80,8 @@ int LDAFMain::instantiateLdaf(int argc, char *argv[]){
         return -1;
     }
 
-    m_browserCLP = new LDAFCommandListProcessor;
-    m_mediatorCLP = new LDAFCommandListProcessor;
-    m_ldafmediator = new LDAFMediator(this,m_mediatorCLP,m_configuration);
-    m_ldafbrowser = new LDAFBrowser(this,m_browserCLP,m_configuration);
+    m_ldafmediator = new LDAFMediator(this,m_configuration);
+    m_ldafbrowser = new LDAFBrowser(this,m_configuration);
     m_ldafmediator->setReceiverObject(m_ldafbrowser);
     m_ldafbrowser->setReceiverObject(m_ldafmediator);
     m_ldafbrowser->loadApplicationWindow(args.at(1));

@@ -13,8 +13,7 @@ class LDAFMediator : public LDAFBase
 {
     Q_OBJECT
 public:
-    explicit LDAFMediator(QObject *parent = 0, QPointer<LDAFCommandListProcessor> commandListProcessor=nullptr,
-    const QJsonObject & jsonConf=QJsonObject());
+    explicit LDAFMediator(QObject *parent, const QJsonObject & jsonConf=QJsonObject());
 
 private:
     QUrl m_baseUrl;
