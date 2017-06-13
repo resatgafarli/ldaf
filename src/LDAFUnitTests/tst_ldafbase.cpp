@@ -59,6 +59,15 @@ TEST(LDAFCommandTest,LDAFCommandExection){
     ldafCommand.executeCommand();//2
     
     EXPECT_EQ(ldafCommand.getMessageObject(),messageType);
-    EXPECT_EQ(ldafCommand.getFunctionPointer(),&LDAFMessageType::setMessage);
-        
+    EXPECT_EQ(ldafCommand.getFunctionPointer(),&LDAFMessageType::setMessage);     
+}
+
+TEST(LDAFCommandTest,LDAFCommandUrlExection){
+    MockLDAFBase mockLDAFbase;
+    MockQObject mockQObject;
+    MockLDAFUrl * urlMessage = new MockLDAFUrl(QUrl(),&mockLDAFbase,&mockQObject,"testFunction");
+    LDAFCommand ldafCommand(urlMessage,&LDAFMessageType::setMessage);
+    
+    EXPECT_CALL(*urlMessage,setMessage()).Times(AtLeast(1));
+    ldafCommand.executeCommand();
 }
