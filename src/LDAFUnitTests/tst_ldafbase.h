@@ -9,16 +9,15 @@ License: GPL-3.0
 #include "gmock/gmock.h"
 #include "ldafbase.h"
 
-class MockLDAFBase:public LDAFBase{
-public:
-
-   MOCK_METHOD3(setURLMessage,void(QUrl, QObject * , QString));
-   MOCK_METHOD3(setJsonMessage,void(QJsonObject, QObject * , QString));
-
+class MockQObject:public QObject{
 };
 
-class MockQObject:public QObject{
 
+class MockLDAFBase:public LDAFBase{
+public:
+   
+   MOCK_METHOD3(setURLMessage,void(QUrl, QObject * , QString));
+   MOCK_METHOD3(setJsonMessage,void(QJsonObject, QObject * , QString));
 };
 
 class MockLDAFMessageType: public LDAFMessageType{
@@ -50,6 +49,7 @@ public:
   explicit MockLDAFCommand(LDAFMessageType * object=nullptr, SetMessageMethod setMessageMethod=nullptr):
     LDAFCommand(object,setMessageMethod){}
 };
+
 
 
 #endif // TST_LDAFBASE_H

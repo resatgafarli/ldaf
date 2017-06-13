@@ -19,6 +19,25 @@ License: GPL-3.0
 class LDAFBase; 
 class LDAFCommand; 
 
+class LDAFCallBackObject{
+public:
+    explicit LDAFCallBackObject(QObject * callBackObject, QString callBackJSFunc):
+        m_callBackObject(callBackObject),
+        m_callBackJSFunc(callBackJSFunc)
+        {}
+
+    const QObject * const getCallBackObject() const{
+        return m_callBackObject;
+    }
+    const QString & getCallBackFunction() const{
+        return m_callBackJSFunc;
+    }
+    
+private:
+    QObject * m_callBackObject;
+    QString m_callBackJSFunc;
+};
+
 class LDAFCommandListProcessor:public QObject {
 public:
     LDAFCommandListProcessor(QObject * parent=nullptr);

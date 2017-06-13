@@ -1,6 +1,18 @@
 #include "tst_ldafbase.h"
 
 using ::testing::AtLeast;
+
+/*--------------------------  LDAFCallBackObject -----------------------------------*/
+TEST(LDAFCallBackObject, LDAFCallBackObjectConstruction){
+  MockQObject * object = new MockQObject();
+  LDAFCallBackObject callBackObject(object,"TestFunction");
+
+  EXPECT_EQ(callBackObject.getCallBackObject(),object);
+  EXPECT_EQ(callBackObject.getCallBackFunction(),"TestFunction");
+
+}
+
+/*----------------------------- LDAFMessage Types --------------------------------- */
 TEST(LDAFMessageTypeTest, LDAFMessageTypeConstruction){
     MockLDAFBase mockLDAFbase;
     MockQObject mockQObject;
@@ -37,6 +49,7 @@ TEST(LDAFJsonTypeTest, LDAFJsonTypeConstruction){
     EXPECT_EQ(ldafJson.getJsonObject()["par1"],"val1");  
     EXPECT_EQ(ldafJson.getJsonObject()["par2"],"val2");  
 }
+/*-------------------------- LDAF Command Pattern  Tests --------------------------*/
 
 TEST(LDAFCommandTest,LDAFCommandConstruction){
     MockLDAFBase mockLDAFbase;
@@ -81,3 +94,22 @@ TEST(LDAFCommandTest,LDAFCommandJsonExecution){
     EXPECT_CALL(*jsonMessage,setMessage()).Times(AtLeast(1));
     ldafCommand.executeCommand();
 }
+
+/*-------------------------- LDAFCommandListProcessor ----------------------------*/
+
+
+/*
+TEST(LDAFBaseTest,LDAFBase_setURLMessage){
+    MockLDAFBase mockLDAFbase;
+    MockQObject mockQObject;
+    QUrl url;
+    url.setPath("/Example/Resource/Path");
+    LDAFUrl * urlMessage = new LDAFUrl(url,&mockLDAFbase,&mockQObject,QString());
+    LDAFCommand ldafCommand(urlMessage,&LDAFMessageType::setMessage);
+    
+    EXPECT_CALL(mockLDAFbase,setURLMessage()).Times(AtLeast(1));
+    ldafCommand.executeCommand();
+
+
+}
+*/
