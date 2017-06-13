@@ -6,7 +6,7 @@ License: GPL-3.0
 *******************************************************/
 #include "ldafbase.h"
 
-/**/
+/*LDAFBase*/
 LDAFBase::LDAFBase(QObject *parent,QPointer<LDAFCommandListProcessor>commandListProcessor, const QJsonObject & jsonConf):
     QObject(parent),
     m_commandListProcessor(commandListProcessor),
@@ -68,7 +68,7 @@ QString LDAFBase::getHomePagePath() const{
 }
 
 
-/**/
+/*LDAFMessageType*/
 LDAFMessageType::LDAFMessageType(LDAFBase * basicObject,QObject * callBackObject,QString callBackJSFunc):
     m_basicObject(basicObject),
     m_callBackObject(callBackObject),
@@ -92,7 +92,7 @@ const QString & LDAFMessageType::getCallBackJSFunc() const{
 }
 
 
-/**/
+/*LDAFUrl*/
 LDAFUrl::LDAFUrl(QUrl url, LDAFBase * basicObject, QObject *callBackObject, QString callBackJSFunc):
     LDAFMessageType(basicObject,callBackObject,callBackJSFunc),
     m_url(url){
@@ -110,7 +110,7 @@ void LDAFUrl::setMessage(){
     if (m_basicObject!=nullptr) m_basicObject->setURLMessage(m_url,m_callBackObject,m_callBackJSFunc);
 }
 
-/**/
+/*LDAFJson*/
 
 LDAFJson::LDAFJson(QJsonObject jsonobject, LDAFBase * basicObject,QObject * callBackObject,QString callBackJSFunc):
     LDAFMessageType(basicObject,callBackObject,callBackJSFunc),
@@ -129,12 +129,11 @@ void LDAFJson::setMessage(){
     if (m_basicObject!=nullptr) m_basicObject->setJsonMessage(m_jsonobject,m_callBackObject, m_callBackJSFunc);
 }
 
-/**/
-
-LDAFCommand::LDAFCommand(LDAFMessageType * object, Method method):
+/*LDAFCommand*/
+LDAFCommand::LDAFCommand(LDAFMessageType * object, SetMessageMethod setMessageMethod):
      m_object(object),
-     m_method(method){
-
+     m_setMessageMethod(setMessageMethod)
+{
 }
 
 LDAFCommand::~LDAFCommand(){
@@ -143,11 +142,20 @@ LDAFCommand::~LDAFCommand(){
  }
 
 void LDAFCommand::executeCommand(){
-     if ((m_object!=nullptr)&&(m_method!=nullptr))
-         (m_object->*m_method)();
+     if ((m_object!=nullptr)&&(m_setMessageMethod!=nullptr))
+         (m_object->*m_setMessageMethod)();
  }
 
-/**/
+const LDAFMessageType * const LDAFCommand::getMessageObject() const{
+    return m_object;
+}
+
+const LDAFCommand::SetMessageMethod LDAFCommand::getFunctionPointer() const{
+    return m_setMessageMethod;
+} 
+
+
+/*LDAFCommandListProcessor*/
 LDAFCommandListProcessor::LDAFCommandListProcessor(QObject * parent):
     QObject(parent),
     m_currentCommand(nullptr)

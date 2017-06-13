@@ -37,3 +37,27 @@ TEST(LDAFJsonTypeTest, LDAFJsonTypeConstruction){
     EXPECT_EQ(ldafJson.getJsonObject()["par1"],"val1");  
     EXPECT_EQ(ldafJson.getJsonObject()["par2"],"val2");  
 }
+
+TEST(LDAFCommandTest,LDAFCommandConstruction){
+    MockLDAFBase mockLDAFbase;
+    MockQObject mockQObject;
+    MockLDAFMessageType * messageType = new MockLDAFMessageType(&mockLDAFbase,&mockQObject,"testFunction");
+    
+    MockLDAFCommand ldafCommand(messageType,&LDAFMessageType::setMessage);
+    EXPECT_EQ(ldafCommand.getMessageObject(),messageType);
+}
+
+TEST(LDAFCommandTest,LDAFCommandExection){
+    MockLDAFBase mockLDAFbase;
+    MockQObject mockQObject;
+    MockLDAFMessageType * messageType = new MockLDAFMessageType(&mockLDAFbase,&mockQObject,"testFunction");
+    EXPECT_CALL(*messageType,setMessage()).Times(AtLeast(3));
+
+    MockLDAFCommand ldafCommand(messageType,&LDAFMessageType::setMessage);
+    ldafCommand.executeCommand();//1
+    ldafCommand.executeCommand();//2
+    ldafCommand.executeCommand();//2
+    
+    EXPECT_EQ(ldafCommand.getMessageObject(),messageType);
+        
+}

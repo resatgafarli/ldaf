@@ -85,14 +85,16 @@ private:
 
 
 class LDAFCommand{
-    typedef void(LDAFMessageType:: *Method)();
 public:
-    explicit LDAFCommand(LDAFMessageType * object=nullptr, Method method=nullptr);
+    typedef void(LDAFMessageType:: *SetMessageMethod)();
+    explicit LDAFCommand(LDAFMessageType * object=nullptr, SetMessageMethod setMessageMethod=nullptr);
     virtual ~LDAFCommand();
     void executeCommand();
+    const LDAFMessageType * const getMessageObject() const;
+    const LDAFCommand::SetMessageMethod getFunctionPointer() const; 
 private:
     LDAFMessageType * m_object;
-    Method m_method;
+    SetMessageMethod m_setMessageMethod;
 };
 
 

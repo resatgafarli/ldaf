@@ -45,5 +45,11 @@ public:
   MOCK_METHOD0(setMessage,void());  
 };
 
+class MockLDAFCommand: public LDAFCommand{
+public:
+  explicit MockLDAFCommand(LDAFMessageType * object=nullptr, SetMessageMethod setMessageMethod=nullptr):
+    LDAFCommand(object,setMessageMethod){}
+};
+
 
 #endif // TST_LDAFBASE_H
