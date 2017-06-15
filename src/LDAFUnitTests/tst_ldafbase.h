@@ -60,7 +60,11 @@ public:
     virtual void SetUp(){
         for (int i = 1;i<=10; ++i){
             urlList.push_back(QUrl(QString("%1%2").arg("Example/Resource/Path_").arg(i)));  
+            QString jscript = QString("{\"par%1\":\"val%1\",\"par%2\":\"val%2\"}").arg(i).arg(i++);
+            QJsonDocument jdoc = QJsonDocument::fromJson(jscript.toUtf8());
+            jsonList.push_back(jdoc.object());  
         }
+
     }
 
     
@@ -68,6 +72,7 @@ public:
     LDAFCallBackObject callBackObject;
     LDAFCommandListProcessor commandListProcessor;
     QList<QUrl> urlList;
+    QList<QJsonObject> jsonList;
 };
 
 
