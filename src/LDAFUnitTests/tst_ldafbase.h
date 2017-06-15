@@ -50,6 +50,26 @@ public:
     LDAFCommand(object,setMessageMethod){}
 };
 
+class LDAFCommandListProcessorTest: public ::testing::Test{
+
+public:
+    LDAFCommandListProcessorTest():
+      receiverObject(new MockLDAFBase()),
+      callBackObject(LDAFCallBackObject(new MockQObject,"TestFunction"))   
+    {}
+    virtual void SetUp(){
+        for (int i = 1;i<=10; ++i){
+            urlList.push_back(QUrl(QString("%1%2").arg("Example/Resource/Path_").arg(i)));  
+        }
+    }
+
+    
+    MockLDAFBase * receiverObject;
+    LDAFCallBackObject callBackObject;
+    LDAFCommandListProcessor commandListProcessor;
+    QList<QUrl> urlList;
+};
+
 
 
 #endif // TST_LDAFBASE_H

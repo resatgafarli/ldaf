@@ -111,7 +111,19 @@ TEST(LDAFCommandTest,LDAFCommandJsonExecution){
 }
 
 /*-------------------------- LDAFCommandListProcessor ----------------------------*/
-
+TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorAddUrlCommand){
+    for (auto  url : urlList){
+        commandListProcessor.addCommand(url,receiverObject,callBackObject);
+    }
+    ASSERT_EQ(commandListProcessor.getActiveCommandQueue().size(),urlList.size());
+    
+    int i = 0;
+    for (auto command : commandListProcessor.getActiveCommandQueue()){
+        const LDAFUrl * const ldafMess = static_cast<const LDAFUrl * const>(command->getMessageObject());
+        ASSERT_EQ(ldafMess->getUrl(), urlList.at(i));
+        i++;
+    }
+}
 
 /*
 TEST(LDAFBaseTest,LDAFBase_setURLMessage){
