@@ -152,20 +152,18 @@ const LDAFCommand::SetMessageMethod LDAFCommand::getFunctionPointer() const{
 
 /*LDAFCommandListProcessor*/
 LDAFCommandListProcessor::LDAFCommandListProcessor(QObject * parent):
-    QObject(parent),
-    m_currentCommand(nullptr)
-{}
+   QObject(parent),
+   m_currentCommand(m_commandList)
+{
+    
+}
 
-const QQueue<LDAFCommand*> & LDAFCommandListProcessor::getActiveCommandQueue() const{
-    return m_activeQueue;
+const   QList<LDAFCommand*> & LDAFCommandListProcessor::getCommandlist() const{
+    return m_commandList;
 }
 
 
-const QStack<LDAFCommand*> & LDAFCommandListProcessor::getProcessedStack () const{
-    return m_processedStack;
-}
-
-const LDAFCommand * const LDAFCommandListProcessor::getCurrentCommand() const{
+const QListIterator<LDAFCommand *> & LDAFCommandListProcessor::getCurrentCommand() const{
     return m_currentCommand;
 }
 
@@ -181,61 +179,47 @@ void LDAFCommandListProcessor::addCommand(QJsonObject message, LDAFBase * toObje
 }
 
 void LDAFCommandListProcessor::processForwardByOne(){
-    if (!m_activeQueue.isEmpty()){
-        if (m_currentCommand==nullptr)
-            m_processedStack.push(m_currentCommand);    
-        m_currentCommand  = m_activeQueue.dequeue();
-        m_currentCommand->executeCommand();
+    if (m_currentCommand.hasNext()){
+        m_currentCommand.next()->executeCommand();
     }
 }
 
 void LDAFCommandListProcessor::processBackwardByOne(){
-    if (!m_processedStack.isEmpty()){
-        auto * command  = m_processedStack.top();
-        m_processedStack.pop();
-        m_activeQueue.enqueue(command);
-        //pass execution of currently executed command
-        if (command == m_currentCommand){
-            processBackwardByOne();
-        }else{
-            m_currentCommand = command;
-            command->executeCommand();
-        }
-
+    if (m_currentCommand.hasPrevious()){
+        m_currentCommand.previous()->executeCommand();
     }
 }
 
 void LDAFCommandListProcessor::processAllForward(){
-    while (!m_activeQueue.isEmpty()){
+    while (!m_commandList.isEmpty()){
         processForwardByOne();
     }
 }
 
 void LDAFCommandListProcessor::processAllBackward(){
-    while (!m_processedStack.isEmpty()){
+    while (!m_commandList.isEmpty()){
         processBackwardByOne();
     }
 }
 
 void LDAFCommandListProcessor::addUrlMessage(QUrl & message, LDAFBase * toObject, LDAFCallBackObject callBackObject){
-    m_activeQueue.enqueue(new LDAFCommand(new LDAFUrl(message,toObject,callBackObject), &LDAFMessageType::setMessage));
+    m_commandList.push_back(new LDAFCommand(new LDAFUrl(message,toObject,callBackObject), &LDAFMessageType::setMessage));
 }
 
 void LDAFCommandListProcessor::addJsonObjectMessage(QJsonObject & message, LDAFBase * toObject, LDAFCallBackObject callBackObject){
-    m_activeQueue.enqueue(new LDAFCommand(new LDAFJson(message,toObject,callBackObject), &LDAFMessageType::setMessage));
+    m_commandList.push_back(new LDAFCommand(new LDAFJson(message,toObject,callBackObject), &LDAFMessageType::setMessage));
 }
 
 bool LDAFCommandListProcessor::isActiveQueueEmpty() const{
-    return m_activeQueue.isEmpty();
+    return m_currentCommand.hasNext();
 }
 
 bool LDAFCommandListProcessor::isProcessedStackEmpty() const{
-    return m_processedStack.isEmpty();
+    return m_currentCommand.hasPrevious();
 }
 
-
 void LDAFCommandListProcessor::reProcessCurrent()const{
-    if (m_currentCommand !=nullptr){
-        m_currentCommand->executeCommand();
+    if (m_currentCommand.hasNext()){
+        m_currentCommand.peekNext()->executeCommand();
     }
 }
