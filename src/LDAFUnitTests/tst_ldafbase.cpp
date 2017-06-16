@@ -112,9 +112,7 @@ TEST(LDAFCommandTest,LDAFCommandJsonExecution){
 
 /*-------------------------- LDAFCommandListProcessor ----------------------------*/
 TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorAddUrlCommand){
-    for (auto  url : urlList){
-        commandListProcessor.addCommand(url,receiverObject,callBackObject);
-    }
+    fillUrlQueue();
     ASSERT_EQ(commandListProcessor.getActiveCommandQueue().size(),urlList.size());
     
     int i = 0;
@@ -125,10 +123,7 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorAddUrlCommand){
     }
 }
 TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorAddJSONCommand){
-    for (auto  json : jsonList){
-        commandListProcessor.addCommand(json,receiverObject,callBackObject);
-    }
-    
+    fillJsonQueue();    
     ASSERT_EQ(commandListProcessor.getActiveCommandQueue().size(),jsonList.size());
 
     int i = 0;
@@ -138,6 +133,38 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorAddJSONCommand){
         i++;
     }
 }
+
+TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorDequeueEnqueue){
+    fillUrlQueue();
+    fillJsonQueue();
+    int totalQueueSize = jsonList.size()+urlList.size();
+    ASSERT_TRUE(commandListProcessor.getActiveCommandQueue().size() == totalQueueSize);
+
+    //Forward
+    for (int i=0;i<totalQueueSize/2;++i){
+        commandListProcessor.processForwardByOne();
+    }
+    
+/*    EXPECT_TRUE(commandListProcessor.getActiveCommandQueue().size()+1 == totalQueueSize/2);
+    EXPECT_TRUE(commandListProcessor.getProcessedStack().size()+1 == totalQueueSize/2);
+*/
+/*    for (int i=totalQueueSize/2;i<totalQueueSize;++i){
+        commandListProcessor.processForwardByOne();
+    }
+*/
+//    ASSERT_TRUE(commandListProcessor.getProcessedStack().size()==totalQueueSize)<<"Stack size failed";
+//    ASSERT_TRUE(commandListProcessor.getActiveCommandQueue().size()==totalQueueSize)<<"Queue size failed";
+
+//    ASSERT_TRUE(commandListProcessor.getProcessedStack().size() == totalQueueSize);
+//    ASSERT_TRUE(commandListProcessor.getActiveCommandQueue().smize() == 0);
+    
+    //Backward
+/*    for (int i=0;i<totalQueueSize/2;++i){
+        commandListProcessor.processBackwardByOne();
+    }
+*/
+}
+
 /*
 TEST(LDAFBaseTest,LDAFBase_setURLMessage){
     MockLDAFBase mockLDAFbase;

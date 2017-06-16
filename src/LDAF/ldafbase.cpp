@@ -165,6 +165,10 @@ const QStack<LDAFCommand*> & LDAFCommandListProcessor::getProcessedStack () cons
     return m_processedStack;
 }
 
+const LDAFCommand * const LDAFCommandListProcessor::getCurrentCommand() const{
+    return m_currentCommand;
+}
+
 
 void LDAFCommandListProcessor::addCommand(QUrl message, LDAFBase * toObject, LDAFCallBackObject callBackObject)
 {
@@ -178,16 +182,10 @@ void LDAFCommandListProcessor::addCommand(QJsonObject message, LDAFBase * toObje
 
 void LDAFCommandListProcessor::processForwardByOne(){
     if (!m_activeQueue.isEmpty()){
-        auto * command  = m_activeQueue.dequeue();
-        m_processedStack.push(command);
-        //pass execution of currently executed command
-        if (command == m_currentCommand){
-            processForwardByOne();
-        } else{
-            m_currentCommand = command;
-            command->executeCommand();
-        }
-
+        if (m_currentCommand==nullptr)
+            m_processedStack.push(m_currentCommand);    
+        m_currentCommand  = m_activeQueue.dequeue();
+        m_currentCommand->executeCommand();
     }
 }
 

@@ -53,7 +53,7 @@ public:
 
     const QQueue<LDAFCommand*> & getActiveCommandQueue() const;
     const QStack<LDAFCommand*> & getProcessedStack () const;
-
+    const LDAFCommand * const getCurrentCommand() const;
 private:
     void addUrlMessage(QUrl & message, LDAFBase * toObject, LDAFCallBackObject callBackObject);
     void addJsonObjectMessage(QJsonObject & message, LDAFBase * toObject, LDAFCallBackObject callBackObject);
