@@ -44,17 +44,11 @@ void LDAFBase::reProcessCurrent()const{
 }
 
 bool LDAFBase::hasNext() const{
-    if (!m_commandListProcessor.isActiveQueueEmpty())
-        return true;
-    else
-        return false;
+    m_commandListProcessor.hasNext();
 }
 
 bool LDAFBase::hasPrev() const{
-    if (!m_commandListProcessor.isProcessedStackEmpty())
-        return true;
-    else
-        return false;
+    m_commandListProcessor.hasPrev();
 }
 
 
@@ -155,7 +149,6 @@ LDAFCommandListProcessor::LDAFCommandListProcessor(QObject * parent):
    QObject(parent),
    m_currentCommand(m_commandList)
 {
-    
 }
 
 const   QList<LDAFCommand*> & LDAFCommandListProcessor::getCommandlist() const{
@@ -163,7 +156,7 @@ const   QList<LDAFCommand*> & LDAFCommandListProcessor::getCommandlist() const{
 }
 
 
-const QListIterator<LDAFCommand *> & LDAFCommandListProcessor::getCurrentCommand() const{
+const  QMutableListIterator<LDAFCommand *> & LDAFCommandListProcessor::getCurrentCommand() const{
     return m_currentCommand;
 }
 
@@ -191,13 +184,13 @@ void LDAFCommandListProcessor::processBackwardByOne(){
 }
 
 void LDAFCommandListProcessor::processAllForward(){
-    while (!m_commandList.isEmpty()){
+    while (m_currentCommand.hasNext()){
         processForwardByOne();
     }
 }
 
 void LDAFCommandListProcessor::processAllBackward(){
-    while (!m_commandList.isEmpty()){
+    while (m_currentCommand.hasPrevious()){
         processBackwardByOne();
     }
 }
@@ -210,11 +203,11 @@ void LDAFCommandListProcessor::addJsonObjectMessage(QJsonObject & message, LDAFB
     m_commandList.push_back(new LDAFCommand(new LDAFJson(message,toObject,callBackObject), &LDAFMessageType::setMessage));
 }
 
-bool LDAFCommandListProcessor::isActiveQueueEmpty() const{
+bool LDAFCommandListProcessor::hasNext() const{
     return m_currentCommand.hasNext();
 }
 
-bool LDAFCommandListProcessor::isProcessedStackEmpty() const{
+bool LDAFCommandListProcessor::hasPrev() const{
     return m_currentCommand.hasPrevious();
 }
 

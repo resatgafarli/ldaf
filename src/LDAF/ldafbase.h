@@ -49,16 +49,16 @@ public:
     void processAllForward();
     void processAllBackward();
     void reProcessCurrent() const;
-    bool isActiveQueueEmpty() const;
-    bool isProcessedStackEmpty() const;
+    bool hasNext() const;
+    bool hasPrev() const;
 
     const QList<LDAFCommand*> & getCommandlist() const;
-    const QListIterator<LDAFCommand *> & getCurrentCommand() const;
+    const QMutableListIterator<LDAFCommand *> & getCurrentCommand() const;
 private:
     void addUrlMessage(QUrl & message, LDAFBase * toObject, LDAFCallBackObject callBackObject);
     void addJsonObjectMessage(QJsonObject & message, LDAFBase * toObject, LDAFCallBackObject callBackObject);
     QList<LDAFCommand*> m_commandList;
-    QListIterator<LDAFCommand*> m_currentCommand;
+    QMutableListIterator<LDAFCommand*> m_currentCommand;
 
 };
 

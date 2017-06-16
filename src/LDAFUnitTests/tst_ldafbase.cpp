@@ -134,37 +134,22 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorAddJSONCommand){
     }
 }
 
-//TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorDequeueEnqueue){
-/*    fillUrlQueue();
+TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorTotalSize){
+    fillUrlQueue();
     fillJsonQueue();
+
     int totalListSize = jsonList.size()+urlList.size();
-    ASSERT_TRUE(commandListProcessor.getCommandlist().size() == totalListSize);
-
-    //Forward
-    for (int i=0;i<totalListSize/2;++i){
+    EXPECT_TRUE(commandListProcessor.getCommandlist().size() == totalListSize);
+    int messCounter=0;
+    //commandListProcessor.processForwardByOne();
+/*    while (commandListProcessor.hasNext()){
         commandListProcessor.processForwardByOne();
+        messCounter++;
     }
-  */
+*/
+  //  EXPECT_TRUE(messCounter == totalListSize)<<messCounter;
 
-/*    EXPECT_TRUE(commandListProcessor.getActiveCommandQueue().size()+1 == totalQueueSize/2);
-    EXPECT_TRUE(commandListProcessor.getProcessedStack().size()+1 == totalQueueSize/2);
-*/
-/*    for (int i=totalQueueSize/2;i<totalQueueSize;++i){
-        commandListProcessor.processForwardByOne();
-    }
-*/
-//    ASSERT_TRUE(commandListProcessor.getProcessedStack().size()==totalQueueSize)<<"Stack size failed";
-//    ASSERT_TRUE(commandListProcessor.getActiveCommandQueue().size()==totalQueueSize)<<"Queue size failed";
-
-//    ASSERT_TRUE(commandListProcessor.getProcessedStack().size() == totalQueueSize);
-//    ASSERT_TRUE(commandListProcessor.getActiveCommandQueue().smize() == 0);
-    
-    //Backward
-/*    for (int i=0;i<totalQueueSize/2;++i){
-        commandListProcessor.processBackwardByOne();
-    }
-*/
-//}
+}
 
 /*
 TEST(LDAFBaseTest,LDAFBase_setURLMessage){
