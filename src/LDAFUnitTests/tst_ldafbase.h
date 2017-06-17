@@ -79,10 +79,6 @@ public:
         }
 
     }
-    
-    void SSSS(){
-        qDebug()<<"Hello"<<endl;
-    }
 
     MockQObject mockQObject;
     MockLDAFBase mockLDAFBase;
@@ -91,7 +87,6 @@ public:
     QList<QUrl> urlList;
     QList<QJsonObject> jsonList;
 };
-
 
 
 #endif // TST_LDAFBASE_H

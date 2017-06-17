@@ -144,7 +144,27 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorTotalSize){
     EXPECT_TRUE(commandListProcessor.getCommandlist().size() == totalListSize);
 }
 
-TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullFrawardBackwardCalls){
+TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardValidation){
+   fillUrlQueue();
+   fillJsonQueue();
+   QListIterator<QUrl> urlIt = urlList;
+   urlIt.toFront();
+   while(urlIt.hasNext()){
+       QUrl url = urlIt.next(); 
+        EXPECT_CALL(mockLDAFBase,setURLMessage(url,_));
+   }
+   
+   QListIterator<QJsonObject> jsonIt = jsonList;
+   jsonIt.toFront();
+   while(jsonIt.hasNext()){
+       QJsonObject json = jsonIt.next(); 
+        EXPECT_CALL(mockLDAFBase,setJsonMessage(json,_));
+   }
+
+   commandListProcessor.processAllForward();
+}
+
+TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardBackwardCalls){
    fillUrlQueue();
    fillJsonQueue();
    const int count = 5;
