@@ -39,7 +39,7 @@ void LDAFBase::processAllForward(){
 void LDAFBase::processAllBackward(){
     m_commandListProcessor.processAllBackward();
 }
-void LDAFBase::reProcessCurrent()const{
+void LDAFBase::reProcessCurrent() {
     m_commandListProcessor.reProcessCurrent();
 }
 
@@ -147,7 +147,8 @@ const LDAFCommand::SetMessageMethod LDAFCommand::getFunctionPointer() const{
 /*LDAFCommandListProcessor*/
 LDAFCommandListProcessor::LDAFCommandListProcessor(QObject * parent):
    QObject(parent),
-   m_currentCommand(m_commandList)
+   m_currentCommandId(-1),
+   m_currentCommand(nullptr)
 {
 }
 
@@ -156,7 +157,7 @@ const   QList<LDAFCommand*> & LDAFCommandListProcessor::getCommandlist() const{
 }
 
 
-const  QMutableListIterator<LDAFCommand *> & LDAFCommandListProcessor::getCurrentCommand() const{
+const LDAFCommand * const LDAFCommandListProcessor::getCurrentCommand() const{
     return m_currentCommand;
 }
 
@@ -171,26 +172,46 @@ void LDAFCommandListProcessor::addCommand(QJsonObject message, LDAFBase * toObje
     addJsonObjectMessage(message,toObject,callBackObject);
 }
 
+void LDAFCommandListProcessor::setCurrentCommand(){
+    if ((m_currentCommandId>=0) && (m_currentCommandId<m_commandList.size())){
+        m_currentCommand = m_commandList.at(m_currentCommandId);
+    }
+}
+
+void LDAFCommandListProcessor::next(){
+    if (m_currentCommandId+1 < m_commandList.size())
+        m_currentCommandId++;
+    setCurrentCommand();        
+}
+
+void LDAFCommandListProcessor::prev(){
+    if (m_currentCommandId-1 >= 0)
+        m_currentCommandId--;
+    setCurrentCommand();
+}
+
 void LDAFCommandListProcessor::processForwardByOne(){
-    if (m_currentCommand.hasNext()){
-        m_currentCommand.next()->executeCommand();
+    if (hasNext()){
+        next();
+        m_currentCommand->executeCommand();
     }
 }
 
 void LDAFCommandListProcessor::processBackwardByOne(){
-    if (m_currentCommand.hasPrevious()){
-        m_currentCommand.previous()->executeCommand();
+    if (hasPrev()){
+        prev();
+        m_currentCommand->executeCommand();
     }
 }
 
 void LDAFCommandListProcessor::processAllForward(){
-    while (m_currentCommand.hasNext()){
+    while (hasNext()){
         processForwardByOne();
     }
 }
 
 void LDAFCommandListProcessor::processAllBackward(){
-    while (m_currentCommand.hasPrevious()){
+    while (hasPrev()){
         processBackwardByOne();
     }
 }
@@ -204,15 +225,20 @@ void LDAFCommandListProcessor::addJsonObjectMessage(QJsonObject & message, LDAFB
 }
 
 bool LDAFCommandListProcessor::hasNext() const{
-    return m_currentCommand.hasNext();
+    if (m_currentCommandId+1 < m_commandList.size())
+        return true;
+    else 
+        return false;
 }
 
 bool LDAFCommandListProcessor::hasPrev() const{
-    return m_currentCommand.hasPrevious();
+    if (m_currentCommandId-1 >= 0)
+        return true;
+    else 
+        return false;
 }
 
-void LDAFCommandListProcessor::reProcessCurrent()const{
-    if (m_currentCommand.hasNext()){
-        m_currentCommand.peekNext()->executeCommand();
-    }
+void LDAFCommandListProcessor::reProcessCurrent(){
+    setCurrentCommand();
+    m_currentCommand->executeCommand();
 }

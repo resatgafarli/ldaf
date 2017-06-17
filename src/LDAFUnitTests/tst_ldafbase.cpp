@@ -1,6 +1,8 @@
 #include "tst_ldafbase.h"
 
 using ::testing::AtLeast;
+using ::testing::_;
+using ::testing::Invoke;
 
 /*--------------------------  LDAFCallBackObject -----------------------------------*/
 TEST(LDAFCallBackObjectTest, LDAFCallBackObjectConstruction){
@@ -140,29 +142,22 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorTotalSize){
 
     int totalListSize = jsonList.size()+urlList.size();
     EXPECT_TRUE(commandListProcessor.getCommandlist().size() == totalListSize);
-    int messCounter=0;
-    //commandListProcessor.processForwardByOne();
-/*    while (commandListProcessor.hasNext()){
-        commandListProcessor.processForwardByOne();
-        messCounter++;
-    }
-*/
-  //  EXPECT_TRUE(messCounter == totalListSize)<<messCounter;
-
 }
 
-/*
-TEST(LDAFBaseTest,LDAFBase_setURLMessage){
-    MockLDAFBase mockLDAFbase;
-    MockQObject mockQObject;
-    QUrl url;
-    url.setPath("/Example/Resource/Path");
-    LDAFUrl * urlMessage = new LDAFUrl(url,&mockLDAFbase,&mockQObject,QString());
-    LDAFCommand ldafCommand(urlMessage,&LDAFMessageType::setMessage);
-    
-    EXPECT_CALL(mockLDAFbase,setURLMessage()).Times(AtLeast(1));
-    ldafCommand.executeCommand();
+TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullFrawardBackwardCalls){
+   fillUrlQueue();
+   fillJsonQueue();
+   const int count = 5;
+   EXPECT_CALL(mockLDAFBase,setURLMessage(_,_))
+    .Times(urlList.size()*count);
+   
+   EXPECT_CALL(mockLDAFBase,setJsonMessage(_,_))
+    .Times(jsonList.size()*count);
 
 
+    commandListProcessor.processAllForward();
+    commandListProcessor.processAllBackward();
+    commandListProcessor.processAllForward();
+    commandListProcessor.processAllBackward();
+    commandListProcessor.processAllForward();
 }
-*/

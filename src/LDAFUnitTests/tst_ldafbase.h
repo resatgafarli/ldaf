@@ -54,9 +54,10 @@ class LDAFCommandListProcessorTest: public ::testing::Test{
 
 public:
     LDAFCommandListProcessorTest():
-      receiverObject(new MockLDAFBase()),
-      callBackObject(LDAFCallBackObject(new MockQObject,"TestFunction"))   
-    {}
+      callBackObject(LDAFCallBackObject(&mockQObject,"TestFunction"))   
+    {
+
+    }
     virtual void SetUp(){
         for (int i = 1;i<=10; ++i){
             urlList.push_back(QUrl(QString("%1%2").arg("Example/Resource/Path_").arg(i)));  
@@ -68,19 +69,23 @@ public:
     }
     void fillUrlQueue(){
         for (auto  url : urlList){
-          commandListProcessor.addCommand(url,receiverObject,callBackObject);
+          commandListProcessor.addCommand(url,&mockLDAFBase,callBackObject);
         }
     }
 
     void fillJsonQueue(){
         for (auto  json : jsonList){
-          commandListProcessor.addCommand(json,receiverObject,callBackObject);
+          commandListProcessor.addCommand(json,&mockLDAFBase,callBackObject);
         }
 
     }
     
-    
-    MockLDAFBase * receiverObject;
+    void SSSS(){
+        qDebug()<<"Hello"<<endl;
+    }
+
+    MockQObject mockQObject;
+    MockLDAFBase mockLDAFBase;
     LDAFCallBackObject callBackObject;
     LDAFCommandListProcessor commandListProcessor;
     QList<QUrl> urlList;

@@ -48,17 +48,23 @@ public:
     void processBackwardByOne();
     void processAllForward();
     void processAllBackward();
-    void reProcessCurrent() const;
+    void reProcessCurrent();
     bool hasNext() const;
     bool hasPrev() const;
 
     const QList<LDAFCommand*> & getCommandlist() const;
-    const QMutableListIterator<LDAFCommand *> & getCurrentCommand() const;
+    const LDAFCommand * const getCurrentCommand() const;
 private:
     void addUrlMessage(QUrl & message, LDAFBase * toObject, LDAFCallBackObject callBackObject);
     void addJsonObjectMessage(QJsonObject & message, LDAFBase * toObject, LDAFCallBackObject callBackObject);
+    void setCurrentCommand();
+    void next();
+    void prev();
+
+
+    int m_currentCommandId;
     QList<LDAFCommand*> m_commandList;
-    QMutableListIterator<LDAFCommand*> m_currentCommand;
+    LDAFCommand * m_currentCommand;
 
 };
 
@@ -78,7 +84,7 @@ public:
    virtual void processBackwardByOne();
    virtual void processAllForward();
    virtual void processAllBackward();
-   virtual void reProcessCurrent()const;
+   virtual void reProcessCurrent();
    Q_INVOKABLE bool hasNext() const;
    Q_INVOKABLE bool hasPrev() const;
    Q_INVOKABLE QString getHomePagePath() const;
