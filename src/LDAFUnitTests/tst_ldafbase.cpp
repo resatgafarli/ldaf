@@ -3,6 +3,7 @@
 using ::testing::AtLeast;
 using ::testing::_;
 using ::testing::Invoke;
+using ::testing::InSequence;
 
 /*--------------------------  LDAFCallBackObject -----------------------------------*/
 TEST(LDAFCallBackObjectTest, LDAFCallBackObjectConstruction){
@@ -145,24 +146,48 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorTotalSize){
 }
 
 TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardValidation){
+   InSequence s;
    fillUrlQueue();
    fillJsonQueue();
    QListIterator<QUrl> urlIt = urlList;
    urlIt.toFront();
    while(urlIt.hasNext()){
        QUrl url = urlIt.next(); 
-        EXPECT_CALL(mockLDAFBase,setURLMessage(url,_));
+        EXPECT_CALL(mockLDAFBase,setURLMessage(url,_)).Times(1);
    }
    
    QListIterator<QJsonObject> jsonIt = jsonList;
    jsonIt.toFront();
    while(jsonIt.hasNext()){
        QJsonObject json = jsonIt.next(); 
-        EXPECT_CALL(mockLDAFBase,setJsonMessage(json,_));
+        EXPECT_CALL(mockLDAFBase,setJsonMessage(json,_)).Times(1);
    }
 
    commandListProcessor.processAllForward();
 }
+
+TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardBackwardValidation){
+   InSequence s;
+   fillUrlQueue();
+   fillJsonQueue();
+   QListIterator<QUrl> urlIt = urlList;
+   urlIt.toFront();
+   while(urlIt.hasNext()){
+       QUrl url = urlIt.next(); 
+        EXPECT_CALL(mockLDAFBase,setURLMessage(url,_)).Times(2);
+   }
+   
+   QListIterator<QJsonObject> jsonIt = jsonList;
+   jsonIt.toFront();
+   while(jsonIt.hasNext()){
+       QJsonObject json = jsonIt.next(); 
+        EXPECT_CALL(mockLDAFBase,setJsonMessage(json,_)).Times(2);
+   }
+
+   commandListProcessor.processAllForward();
+   commandListProcessor.processAllBackward();
+}
+
 
 TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardBackwardCalls){
    fillUrlQueue();
