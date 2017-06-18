@@ -175,7 +175,8 @@ void LDAFCommandListProcessor::addCommand(QJsonObject message, LDAFBase * toObje
 void LDAFCommandListProcessor::setCurrentCommand(){
     if ((m_currentCommandId>=0) && (m_currentCommandId<m_commandList.size())){
         m_currentCommand = m_commandList.at(m_currentCommandId);
-    }
+    }else
+        m_currentCommand=nullptr;
 }
 
 void LDAFCommandListProcessor::next(){
@@ -191,14 +192,16 @@ void LDAFCommandListProcessor::prev(){
 void LDAFCommandListProcessor::processForwardByOne(){
     if (hasNext()){
         next();
-        m_currentCommand->executeCommand();
+        if (m_currentCommand!=nullptr) 
+            m_currentCommand->executeCommand();
     }
 }
 
 void LDAFCommandListProcessor::processBackwardByOne(){
     if (hasPrev()){
         prev();
-        m_currentCommand->executeCommand();
+        if (m_currentCommand!=nullptr) 
+            m_currentCommand->executeCommand();
     }
 }
 
@@ -246,6 +249,7 @@ bool LDAFCommandListProcessor::hasPrev() {
 
 void LDAFCommandListProcessor::reProcessCurrent(){
     setCurrentCommand();
-    m_currentCommand->executeCommand();
+    if (m_currentCommand != nullptr)
+        m_currentCommand->executeCommand();
 }
 

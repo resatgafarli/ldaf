@@ -229,3 +229,23 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardBackwardT
    commandListProcessor.processAllBackward();
    commandListProcessor.processAllForward();
 }
+
+TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorReporcessCurrent){
+   fillUrlQueue();
+   
+   int mid_command = urlList.size()/2;
+   if (mid_command<=0) return; 
+
+   EXPECT_CALL(mockLDAFBase,setURLMessage(_,_)).Times(mid_command);
+   for(int i = 0; i < mid_command;++i){
+       commandListProcessor.processForwardByOne();
+   }
+
+   if(mid_command>=1){
+        EXPECT_CALL(mockLDAFBase,setURLMessage(urlList.at(mid_command-1),_)).Times(2);
+        commandListProcessor.reProcessCurrent();
+        commandListProcessor.reProcessCurrent();
+
+   }
+
+}
