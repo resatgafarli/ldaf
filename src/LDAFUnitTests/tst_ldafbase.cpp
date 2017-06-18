@@ -167,42 +167,20 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardValidatio
 }
 
 TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardBackwardValidation){
-   InSequence s;
    fillUrlQueue();
    fillJsonQueue();
-   QListIterator<QUrl> urlIt = urlList;
-   urlIt.toFront();
-   while(urlIt.hasNext()){
-       QUrl url = urlIt.next(); 
-        EXPECT_CALL(mockLDAFBase,setURLMessage(url,_)).Times(2);
-   }
    
-   QListIterator<QJsonObject> jsonIt = jsonList;
-   jsonIt.toFront();
-   while(jsonIt.hasNext()){
-       QJsonObject json = jsonIt.next(); 
-        EXPECT_CALL(mockLDAFBase,setJsonMessage(json,_)).Times(2);
+   for (int i=0;i<urlList.size();++i){
+       EXPECT_CALL(mockLDAFBase,setURLMessage(urlList.at(i),_)).Times(2);
    }
+   for (int i=0;i<jsonList.size()-1;++i){
+       EXPECT_CALL(mockLDAFBase,setJsonMessage(jsonList.at(i),_)).Times(2); 
+   }     
+   //The last command is also current command at the end of processAllForward,
+   //In this case when processAllBackward is called last command will not be called twice.
+   
+    EXPECT_CALL(mockLDAFBase,setJsonMessage(jsonList.at(jsonList.size()-1),_)).Times(1); 
 
    commandListProcessor.processAllForward();
    commandListProcessor.processAllBackward();
-}
-
-
-TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardBackwardCalls){
-   fillUrlQueue();
-   fillJsonQueue();
-   const int count = 5;
-   EXPECT_CALL(mockLDAFBase,setURLMessage(_,_))
-    .Times(urlList.size()*count);
-   
-   EXPECT_CALL(mockLDAFBase,setJsonMessage(_,_))
-    .Times(jsonList.size()*count);
-
-
-    commandListProcessor.processAllForward();
-    commandListProcessor.processAllBackward();
-    commandListProcessor.processAllForward();
-    commandListProcessor.processAllBackward();
-    commandListProcessor.processAllForward();
 }
