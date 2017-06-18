@@ -179,14 +179,12 @@ void LDAFCommandListProcessor::setCurrentCommand(){
 }
 
 void LDAFCommandListProcessor::next(){
-    if (m_currentCommandId+1 < m_commandList.size())
-        m_currentCommandId++;
+    if (hasNext()) m_currentCommandId++;
     setCurrentCommand();        
 }
 
 void LDAFCommandListProcessor::prev(){
-    if (m_currentCommandId-1 >= 0)
-        m_currentCommandId--;
+    if (hasPrev()) m_currentCommandId--;
     setCurrentCommand();
 }
 
