@@ -43,11 +43,11 @@ void LDAFBase::reProcessCurrent() {
     m_commandListProcessor.reProcessCurrent();
 }
 
-bool LDAFBase::hasNext() const{
+bool LDAFBase::hasNext(){
     m_commandListProcessor.hasNext();
 }
 
-bool LDAFBase::hasPrev() const{
+bool LDAFBase::hasPrev(){
     m_commandListProcessor.hasPrev();
 }
 
@@ -222,14 +222,22 @@ void LDAFCommandListProcessor::addJsonObjectMessage(QJsonObject & message, LDAFB
     m_commandList.push_back(new LDAFCommand(new LDAFJson(message,toObject,callBackObject), &LDAFMessageType::setMessage));
 }
 
-bool LDAFCommandListProcessor::hasNext() const{
+bool LDAFCommandListProcessor::hasNext() {
+    //Command pointer is adjusted in case of list size been changed.  
+    if (m_currentCommandId+1 >= m_commandList.size())
+        m_currentCommandId = m_commandList.size()-1;
+
     if (m_currentCommandId+1 < m_commandList.size())
         return true;
     else 
         return false;
 }
 
-bool LDAFCommandListProcessor::hasPrev() const{
+bool LDAFCommandListProcessor::hasPrev() {
+    //Command pointer is adjusted in case of list size been changed.  
+    if (m_currentCommandId-1 >= m_commandList.size())
+        m_currentCommandId = m_commandList.size()-1;
+    
     if (m_currentCommandId-1 >= 0)
         return true;
     else 
@@ -240,3 +248,4 @@ void LDAFCommandListProcessor::reProcessCurrent(){
     setCurrentCommand();
     m_currentCommand->executeCommand();
 }
+

@@ -49,8 +49,8 @@ public:
     void processAllForward();
     void processAllBackward();
     void reProcessCurrent();
-    bool hasNext() const;
-    bool hasPrev() const;
+    bool hasNext();
+    bool hasPrev();
 
     const QList<LDAFCommand*> & getCommandlist() const;
     const LDAFCommand * const getCurrentCommand() const;
@@ -60,7 +60,6 @@ private:
     void setCurrentCommand();
     void next();
     void prev();
-
 
     int m_currentCommandId;
     QList<LDAFCommand*> m_commandList;
@@ -85,8 +84,8 @@ public:
    virtual void processAllForward();
    virtual void processAllBackward();
    virtual void reProcessCurrent();
-   Q_INVOKABLE bool hasNext() const;
-   Q_INVOKABLE bool hasPrev() const;
+   Q_INVOKABLE bool hasNext();
+   Q_INVOKABLE bool hasPrev();
    Q_INVOKABLE QString getHomePagePath() const;
    Q_INVOKABLE QString getServerResourcePath() const; 
    
