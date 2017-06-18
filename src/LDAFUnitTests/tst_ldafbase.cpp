@@ -166,7 +166,7 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardValidatio
    commandListProcessor.processAllForward();
 }
 
-TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardBackwardValidation){
+TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardBackwardTwiceValidation){
    fillUrlQueue();
    fillJsonQueue();
    
@@ -183,4 +183,29 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardBackwardV
 
    commandListProcessor.processAllForward();
    commandListProcessor.processAllBackward();
+}
+
+TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardBackwardTripmeValidation){
+   fillUrlQueue();
+   fillJsonQueue();
+
+   //In this case first command will not be triple called.   
+   EXPECT_CALL(mockLDAFBase,setURLMessage(urlList.at(0),_)).Times(2); 
+
+   for (int i=1;i<urlList.size();++i){
+       EXPECT_CALL(mockLDAFBase,setURLMessage(urlList.at(i),_)).Times(3);
+   }
+   
+   for (int i=0;i<jsonList.size()-1;++i){
+       EXPECT_CALL(mockLDAFBase,setJsonMessage(jsonList.at(i),_)).Times(3); 
+   }     
+   //The last command is also current command at the end of processAllForward,
+   //In this case when processAllBackward is called last command will not be called twice.
+   
+    EXPECT_CALL(mockLDAFBase,setJsonMessage(jsonList.at(jsonList.size()-1),_)).Times(2); 
+
+   commandListProcessor.processAllForward();
+   commandListProcessor.processAllBackward();
+   commandListProcessor.processAllForward();
+
 }
