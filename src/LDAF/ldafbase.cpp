@@ -1,6 +1,6 @@
 /******************************************************
 Author: resat.gafarli@gmail.com
-File: ldafbasic
+File: ldafbase
 Date: 5/24/2017
 License: GPL-3.0
 *******************************************************/
