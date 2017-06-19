@@ -22,7 +22,7 @@ LDAFBrowser::LDAFBrowser(QObject * parent, const QJsonObject & jsonConf) : LDAFB
     m_engine->rootContext()->setContextProperty("ldafbrowser",this);
 }
 
-void LDAFBrowser::loadApplicationWindow(QString path){
+void LDAFBrowser::loadApplicationWindow(){
     QUrl url("qrc:/ldafbrowser.qml");
     m_component->loadUrl(url);
     while (m_component->isLoading()){}

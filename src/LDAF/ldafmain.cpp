@@ -84,7 +84,7 @@ int LDAFMain::instantiateLdaf(int argc, char *argv[]){
     m_ldafbrowser = new LDAFBrowser(this,m_configuration);
     m_ldafmediator->setReceiverObject(m_ldafbrowser);
     m_ldafbrowser->setReceiverObject(m_ldafmediator);
-    m_ldafbrowser->loadApplicationWindow(args.at(1));
+    m_ldafbrowser->loadApplicationWindow();
 
     return a.exec();
 }

@@ -19,7 +19,7 @@ class LDAFBrowser : public LDAFBase
     Q_OBJECT
 public:
     explicit LDAFBrowser(QObject * parent, const QJsonObject & jsonConf=QJsonObject());
-    void loadApplicationWindow(QString);
+    void loadApplicationWindow();
 
     Q_INVOKABLE void openPage(QString path, QObject * callBackObject, QString callBackJSFunc);
     Q_INVOKABLE void reloadCurrent();
