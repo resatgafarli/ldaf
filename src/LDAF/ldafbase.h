@@ -88,7 +88,7 @@ public:
    Q_INVOKABLE bool hasPrev();
    Q_INVOKABLE QString getHomePagePath() const;
    Q_INVOKABLE QString getServerResourcePath() const; 
-   
+   const QPointer<LDAFBase> & getReceiverObject() const;     
 
 private:
     const QJsonObject & m_jsonConf;

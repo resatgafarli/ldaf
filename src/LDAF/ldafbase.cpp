@@ -16,6 +16,11 @@ LDAFBase::LDAFBase(QObject *parent, const QJsonObject & jsonConf):
 void LDAFBase::setReceiverObject(LDAFBase * object){
      m_object = object;
  }
+
+const QPointer<LDAFBase> & LDAFBase::getReceiverObject() const{
+    return m_object;
+}     
+
 void LDAFBase::addCommand(QUrl url, LDAFCallBackObject callBackObject) {
     m_commandListProcessor.addCommand(url,m_object,callBackObject);
  }

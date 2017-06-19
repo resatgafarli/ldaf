@@ -254,7 +254,11 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorReporcessCurrent){
         EXPECT_CALL(mockLDAFBase,setURLMessage(urlList.at(mid_command-1),_)).Times(2);
         commandListProcessor.reProcessCurrent();
         commandListProcessor.reProcessCurrent();
-
    }
+}
 
+/*------------------------- LDAFBase ------------------------------------- */
+TEST_F(LDAFBaseTest,LDAFBaseReceiverObjectTest){
+    EXPECT_TRUE(m_firstLDAFBase->getReceiverObject() == m_secondLDAFBase);
+    EXPECT_TRUE(m_secondLDAFBase->getReceiverObject() == m_firstLDAFBase);
 }

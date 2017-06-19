@@ -15,7 +15,9 @@ class MockQObject:public QObject{
 
 class MockLDAFBase:public LDAFBase{
 public:
-   
+   MockLDAFBase(QObject *parent=0, const QJsonObject & jsonConf=QJsonObject())
+    :LDAFBase(parent,jsonConf){
+    }
    MOCK_METHOD2(setURLMessage,void(QUrl, LDAFCallBackObject));
    MOCK_METHOD2(setJsonMessage,void(QJsonObject, LDAFCallBackObject));
 };
@@ -63,20 +65,14 @@ class LDAFCommonTestMessages{
     
     QList<QUrl> urlList;
     QList<QJsonObject> jsonList;
-    MockQObject mockQObject;
     MockLDAFBase mockLDAFBase;
     LDAFCallBackObject callBackObject;  
 };
 
 class LDAFCommandListProcessorTest: public ::testing::Test, public LDAFCommonTestMessages {
-
 public:
-    LDAFCommandListProcessorTest()   
-    {
-        setupMessageLists();
-    }
     virtual void SetUp(){
-
+        setupMessageLists();
     }
     void fillUrlQueue(){
         for (auto  url : urlList){
@@ -94,5 +90,27 @@ public:
     LDAFCommandListProcessor commandListProcessor;
 };
 
+class LDAFBaseTest: public ::testing::Test, public LDAFCommonTestMessages {
+public:
+    virtual void SetUp(){
+      setupMessageLists();
+      setupConfiguration();
+      m_firstLDAFBase = new MockLDAFBase(nullptr,m_fakeConfiguration);
+      m_secondLDAFBase = new MockLDAFBase(nullptr,m_fakeConfiguration);
+      m_firstLDAFBase->setReceiverObject(m_secondLDAFBase);
+      m_secondLDAFBase->setReceiverObject(m_firstLDAFBase);
+    }
+
+    virtual void setupConfiguration(){
+      QString jscript = QString("{\"server_resource_root\":\"ServerRootPath\",\"browser_home_page\":\"HomePage\"}");
+      QJsonDocument jdoc = QJsonDocument::fromJson(jscript.toUtf8());
+      m_fakeConfiguration = jdoc.object(); 
+    }
+
+  QJsonObject m_fakeConfiguration;
+  QPointer<MockLDAFBase> m_firstLDAFBase;
+  QPointer<MockLDAFBase> m_secondLDAFBase;
+
+};
 
 #endif // TST_LDAFBASE_H
