@@ -50,21 +50,32 @@ public:
     LDAFCommand(object,setMessageMethod){}
 };
 
-class LDAFCommandListProcessorTest: public ::testing::Test{
-
-public:
-    LDAFCommandListProcessorTest():
-      callBackObject(LDAFCallBackObject(&mockQObject,"TestFunction"))   
-    {
-
-    }
-    virtual void SetUp(){
+class LDAFCommonTestMessages{
+  public:
+    void setupMessageLists(){
         for (int i = 1;i<=11; ++i){
             urlList.push_back(QUrl(QString("%1%2").arg("Example/Resource/Path_").arg(i)));  
             QString jscript = QString("{\"par%1\":\"val%1\",\"par%2\":\"val%2\"}").arg(i).arg(i+1);
             QJsonDocument jdoc = QJsonDocument::fromJson(jscript.toUtf8());
             jsonList.push_back(jdoc.object());  
         }
+    }
+    
+    QList<QUrl> urlList;
+    QList<QJsonObject> jsonList;
+    MockQObject mockQObject;
+    MockLDAFBase mockLDAFBase;
+    LDAFCallBackObject callBackObject;  
+};
+
+class LDAFCommandListProcessorTest: public ::testing::Test, public LDAFCommonTestMessages {
+
+public:
+    LDAFCommandListProcessorTest()   
+    {
+        setupMessageLists();
+    }
+    virtual void SetUp(){
 
     }
     void fillUrlQueue(){
@@ -80,12 +91,7 @@ public:
 
     }
 
-    MockQObject mockQObject;
-    MockLDAFBase mockLDAFBase;
-    LDAFCallBackObject callBackObject;
     LDAFCommandListProcessor commandListProcessor;
-    QList<QUrl> urlList;
-    QList<QJsonObject> jsonList;
 };
 
 
