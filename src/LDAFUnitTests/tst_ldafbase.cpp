@@ -150,9 +150,12 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorHasNextPrev){
     EXPECT_TRUE(commandListProcessor.hasNext()==false);
     fillUrlQueue();
 
+    EXPECT_CALL(mockLDAFBase,setURLMessage(_,_)).Times(AtLeast(1));
+
     EXPECT_TRUE(commandListProcessor.hasNext()==true);
     EXPECT_TRUE(commandListProcessor.hasPrev()==false);
 
+    
     commandListProcessor.processAllForward();
     EXPECT_TRUE(commandListProcessor.hasNext()==false);
     EXPECT_TRUE(commandListProcessor.hasPrev()==true);
