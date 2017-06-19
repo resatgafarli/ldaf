@@ -102,7 +102,7 @@ public:
     }
 
     virtual void setupConfiguration(){
-      QString jscript = QString("{\"server_resource_root\":\"ServerRootPath\",\"browser_home_page\":\"HomePage\"}");
+      QString jscript = QString("{\"server_resource_root\":\"ServerResourcePath\",\"browser_home_page\":\"HomePage\"}");
       QJsonDocument jdoc = QJsonDocument::fromJson(jscript.toUtf8());
       m_fakeConfiguration = jdoc.object(); 
     }

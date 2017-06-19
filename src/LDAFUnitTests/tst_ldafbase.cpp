@@ -262,3 +262,11 @@ TEST_F(LDAFBaseTest,LDAFBaseReceiverObjectTest){
     EXPECT_TRUE(m_firstLDAFBase->getReceiverObject() == m_secondLDAFBase);
     EXPECT_TRUE(m_secondLDAFBase->getReceiverObject() == m_firstLDAFBase);
 }
+
+TEST_F(LDAFBaseTest,LDAFBaseConfigurationTest){
+    EXPECT_TRUE(m_firstLDAFBase->getServerResourcePath() == "ServerResourcePath");
+    EXPECT_TRUE(m_firstLDAFBase->getHomePagePath() == "HomePage");
+    EXPECT_TRUE(m_secondLDAFBase->getServerResourcePath() == "ServerResourcePath");
+    EXPECT_TRUE(m_secondLDAFBase->getHomePagePath() == "HomePage");
+    
+}
