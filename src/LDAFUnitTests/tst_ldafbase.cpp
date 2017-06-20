@@ -270,17 +270,28 @@ TEST_F(LDAFBaseTest,LDAFBaseReceiverObjectValidation){
     EXPECT_TRUE(m_secondLDAFBase->getReceiverObject() == m_firstLDAFBase);
 }
 
-TEST_F(LDAFBaseTest,LDAFBaseMessageBroadcastCount){
+TEST_F(LDAFBaseTest,LDAFBaseMessageBroadcastCounter){
     connectLDAFBases();
+    addUrlCommands();
+    addJsonCommands();    
+
+    EXPECT_CALL(*m_secondLDAFBase,setURLMessage(_,_)).Times(urlList.size()); 
+    EXPECT_CALL(*m_secondLDAFBase,setJsonMessage(_,_)).Times(jsonList.size());
+
+    m_firstLDAFBase->processAllForward();
+}
+
+TEST_F(LDAFBaseTest,LDAFBaseMessageBroadcastValidation){
+    connectLDAFBases();
+    addUrlCommands();
+    addJsonCommands();    
     for (auto url: urlList){
-        m_firstLDAFBase->addCommand(url,callBackObject);
+        EXPECT_CALL(*m_secondLDAFBase,setURLMessage(url,_)).Times(1); 
     }
-    EXPECT_CALL(*m_secondLDAFBase,setURLMessage(_,_)).Times(urlList.size());
     
     for (auto json: jsonList){
-        m_firstLDAFBase->addCommand(json,callBackObject);
+        EXPECT_CALL(*m_secondLDAFBase,setJsonMessage(json,_)).Times(1); 
     }
-    EXPECT_CALL(*m_secondLDAFBase,setJsonMessage(_,_)).Times(jsonList.size());
-    
+
     m_firstLDAFBase->processAllForward();
 }

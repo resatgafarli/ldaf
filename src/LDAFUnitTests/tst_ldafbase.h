@@ -108,6 +108,18 @@ public:
       m_secondLDAFBase->setReceiverObject(m_firstLDAFBase);
     }
 
+    virtual void addUrlCommands(){
+      for (auto url: urlList){
+        m_firstLDAFBase->addCommand(url,callBackObject);
+      }
+    }
+    
+    virtual void addJsonCommands(){
+      for (auto json: jsonList){
+        m_firstLDAFBase->addCommand(json,callBackObject);
+      }
+    }
+
     virtual void setupConfiguration(){
       QString jscript = QString("{\"server_resource_root\":\"ServerResourcePath\",\"browser_home_page\":\"HomePage\"}");
       QJsonDocument jdoc = QJsonDocument::fromJson(jscript.toUtf8());
