@@ -26,6 +26,30 @@ public:
         m_callBackObject(callBackObject),
         m_callBackJSFunc(callBackJSFunc)
         {}
+    virtual ~LDAFCallBackObject()
+        {}   
+
+    LDAFCallBackObject (const LDAFCallBackObject & other){
+        if (this != &other){
+            m_callBackObject = other.m_callBackObject;
+            m_callBackJSFunc = other.m_callBackJSFunc;
+        }
+    }
+
+    LDAFCallBackObject & operator = (const LDAFCallBackObject & other){
+        if (this != &other){
+            LDAFCallBackObject copy (other);
+            std::swap(*this,copy);
+        }
+        return *this;
+    }
+const
+    bool operator == (const LDAFCallBackObject & other) const {
+        bool ret = true;
+		ret &= (m_callBackObject == other.m_callBackObject); 
+		ret &= (m_callBackJSFunc == other.m_callBackJSFunc); 
+        return ret;
+    }
 
     QObject * getObjectPointer() const{
         return m_callBackObject;
@@ -33,6 +57,7 @@ public:
     const QString & getFunctionName() const{
         return m_callBackJSFunc;
     }
+    
     
 private:
     QObject * m_callBackObject;
