@@ -9,6 +9,7 @@ License: GPL-3.0
 #include "gmock/gmock.h"
 #include "ldafbase.h"
 
+
 class MockQObject:public QObject{
 };
 
@@ -118,6 +119,16 @@ public:
       for (auto json: jsonList){
         m_firstLDAFBase->addCommand(json,callBackObject);
       }
+    }
+
+    virtual void setResponseUrlMessage(QUrl url, LDAFCallBackObject callBackObject){
+        m_secondLDAFBase->addCommand(url,callBackObject);
+        m_secondLDAFBase->processForwardByOne();
+    }
+
+    virtual void setResponseJsonMessage(QJsonObject json, LDAFCallBackObject callBackObject){
+        m_secondLDAFBase->addCommand(json,callBackObject);
+        m_secondLDAFBase->processForwardByOne();
     }
 
     virtual void setupConfiguration(){

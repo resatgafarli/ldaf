@@ -315,3 +315,37 @@ TEST_F(LDAFBaseTest,LDAFBaseMessageBothSideBroadcastValidation){
     m_firstLDAFBase->processAllForward();
     m_firstLDAFBase->processAllBackward();
 }
+
+TEST_F(LDAFBaseTest,LDAFBaseMessageBothSideResponseValidation){
+   connectLDAFBases();
+   addUrlCommands();
+   addJsonCommands();    
+   
+   for (int i=0;i<urlList.size();++i){
+       ON_CALL(*m_secondLDAFBase,setURLMessage(urlList.at(i),_))
+        .WillByDefault(Invoke(this,&LDAFBaseTest::setResponseUrlMessage));
+       
+       EXPECT_CALL(*m_secondLDAFBase,setURLMessage(urlList.at(i),_)).Times(2);
+       EXPECT_CALL(*m_firstLDAFBase,setURLMessage(urlList.at(i),_)).Times(2);
+   }
+
+   for (int i=0;i<jsonList.size()-1;++i){
+       ON_CALL(*m_secondLDAFBase,setJsonMessage(jsonList.at(i),_))
+        .WillByDefault(Invoke(this,&LDAFBaseTest::setResponseJsonMessage));
+
+       EXPECT_CALL(*m_secondLDAFBase,setJsonMessage(jsonList.at(i),_)).Times(2); 
+       EXPECT_CALL(*m_firstLDAFBase,setJsonMessage(jsonList.at(i),_)).Times(2); 
+   }     
+   //The last command is also current command at the end of processAllForward,
+   //In this case when processAllBackward is called last command will not be called twice.
+    if (jsonList.size()!=0){
+        ON_CALL(*m_secondLDAFBase,setJsonMessage(jsonList.at(jsonList.size()-1),_))
+        .WillByDefault(Invoke(this,&LDAFBaseTest::setResponseJsonMessage));
+
+        EXPECT_CALL(*m_secondLDAFBase,setJsonMessage(jsonList.at(jsonList.size()-1),_)).Times(1); 
+        EXPECT_CALL(*m_firstLDAFBase,setJsonMessage(jsonList.at(jsonList.size()-1),_)).Times(1); 
+    }  
+
+    m_firstLDAFBase->processAllForward();
+    m_firstLDAFBase->processAllBackward();
+}
