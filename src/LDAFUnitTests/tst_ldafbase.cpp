@@ -172,7 +172,6 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorHasNextPrev){
 
 }
 
-
 TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorFullForwardValidation){
    InSequence s;
    fillUrlQueue();
@@ -258,15 +257,30 @@ TEST_F(LDAFCommandListProcessorTest,LDAFCommandListProcessorReporcessCurrent){
 }
 
 /*------------------------- LDAFBase ------------------------------------- */
-TEST_F(LDAFBaseTest,LDAFBaseReceiverObjectTest){
-    EXPECT_TRUE(m_firstLDAFBase->getReceiverObject() == m_secondLDAFBase);
-    EXPECT_TRUE(m_secondLDAFBase->getReceiverObject() == m_firstLDAFBase);
-}
-
-TEST_F(LDAFBaseTest,LDAFBaseConfigurationTest){
+TEST_F(LDAFBaseTest,LDAFBaseConfigurationValidation){
     EXPECT_TRUE(m_firstLDAFBase->getServerResourcePath() == "ServerResourcePath");
     EXPECT_TRUE(m_firstLDAFBase->getHomePagePath() == "HomePage");
     EXPECT_TRUE(m_secondLDAFBase->getServerResourcePath() == "ServerResourcePath");
     EXPECT_TRUE(m_secondLDAFBase->getHomePagePath() == "HomePage");
+}
+
+TEST_F(LDAFBaseTest,LDAFBaseReceiverObjectValidation){
+    connectLDAFBases();
+    EXPECT_TRUE(m_firstLDAFBase->getReceiverObject() == m_secondLDAFBase);
+    EXPECT_TRUE(m_secondLDAFBase->getReceiverObject() == m_firstLDAFBase);
+}
+
+TEST_F(LDAFBaseTest,LDAFBaseMessageBroadcastCount){
+    connectLDAFBases();
+    for (auto url: urlList){
+        m_firstLDAFBase->addCommand(url,callBackObject);
+    }
+    EXPECT_CALL(*m_secondLDAFBase,setURLMessage(_,_)).Times(urlList.size());
     
+    for (auto json: jsonList){
+        m_firstLDAFBase->addCommand(json,callBackObject);
+    }
+    EXPECT_CALL(*m_secondLDAFBase,setJsonMessage(_,_)).Times(jsonList.size());
+    
+    m_firstLDAFBase->processAllForward();
 }

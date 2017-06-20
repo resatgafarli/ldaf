@@ -65,7 +65,6 @@ class LDAFCommonTestMessages{
     
     QList<QUrl> urlList;
     QList<QJsonObject> jsonList;
-    MockLDAFBase mockLDAFBase;
     LDAFCallBackObject callBackObject;  
 };
 
@@ -88,6 +87,7 @@ public:
     }
 
     LDAFCommandListProcessor commandListProcessor;
+    MockLDAFBase mockLDAFBase;
 };
 
 class LDAFBaseTest: public ::testing::Test, public LDAFCommonTestMessages {
@@ -97,6 +97,13 @@ public:
       setupConfiguration();
       m_firstLDAFBase = new MockLDAFBase(nullptr,m_fakeConfiguration);
       m_secondLDAFBase = new MockLDAFBase(nullptr,m_fakeConfiguration);
+    }
+    virtual void TearDown(){
+      delete m_firstLDAFBase;
+      delete m_secondLDAFBase;
+    }
+
+    virtual void connectLDAFBases(){
       m_firstLDAFBase->setReceiverObject(m_secondLDAFBase);
       m_secondLDAFBase->setReceiverObject(m_firstLDAFBase);
     }
@@ -108,8 +115,8 @@ public:
     }
 
   QJsonObject m_fakeConfiguration;
-  QPointer<MockLDAFBase> m_firstLDAFBase;
-  QPointer<MockLDAFBase> m_secondLDAFBase;
+  MockLDAFBase * m_firstLDAFBase;
+  MockLDAFBase * m_secondLDAFBase;
 
 };
 
