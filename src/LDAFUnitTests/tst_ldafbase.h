@@ -96,50 +96,50 @@ public:
     virtual void SetUp(){
       setupMessageLists();
       setupConfiguration();
-      m_firstLDAFBase = new MockLDAFBase(nullptr,m_fakeConfiguration);
-      m_secondLDAFBase = new MockLDAFBase(nullptr,m_fakeConfiguration);
+      firstLDAFBase = new MockLDAFBase(nullptr,fakeConfiguration);
+      secondLDAFBase = new MockLDAFBase(nullptr,fakeConfiguration);
     }
     virtual void TearDown(){
-      delete m_firstLDAFBase;
-      delete m_secondLDAFBase;
+      delete firstLDAFBase;
+      delete secondLDAFBase;
     }
 
     virtual void connectLDAFBases(){
-      m_firstLDAFBase->setReceiverObject(m_secondLDAFBase);
-      m_secondLDAFBase->setReceiverObject(m_firstLDAFBase);
+      firstLDAFBase->setReceiverObject(secondLDAFBase);
+      secondLDAFBase->setReceiverObject(firstLDAFBase);
     }
 
     virtual void addUrlCommands(){
       for (auto url: urlList){
-        m_firstLDAFBase->addCommand(url,callBackObject);
+        firstLDAFBase->addCommand(url,callBackObject);
       }
     }
     
     virtual void addJsonCommands(){
       for (auto json: jsonList){
-        m_firstLDAFBase->addCommand(json,callBackObject);
+        firstLDAFBase->addCommand(json,callBackObject);
       }
     }
 
     virtual void setResponseUrlMessage(QUrl url, LDAFCallBackObject callBackObject){
-        m_secondLDAFBase->addCommand(url,callBackObject);
-        m_secondLDAFBase->processForwardByOne();
+        secondLDAFBase->addCommand(url,callBackObject);
+        secondLDAFBase->processForwardByOne();
     }
 
     virtual void setResponseJsonMessage(QJsonObject json, LDAFCallBackObject callBackObject){
-        m_secondLDAFBase->addCommand(json,callBackObject);
-        m_secondLDAFBase->processForwardByOne();
+        secondLDAFBase->addCommand(json,callBackObject);
+        secondLDAFBase->processForwardByOne();
     }
 
     virtual void setupConfiguration(){
       QString jscript = QString("{\"server_resource_root\":\"ServerResourcePath\",\"browser_home_page\":\"HomePage\"}");
       QJsonDocument jdoc = QJsonDocument::fromJson(jscript.toUtf8());
-      m_fakeConfiguration = jdoc.object(); 
+      fakeConfiguration = jdoc.object(); 
     }
 
-  QJsonObject m_fakeConfiguration;
-  MockLDAFBase * m_firstLDAFBase;
-  MockLDAFBase * m_secondLDAFBase;
+  QJsonObject fakeConfiguration;
+  MockLDAFBase * firstLDAFBase;
+  MockLDAFBase * secondLDAFBase;
 
 };
 
