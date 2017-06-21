@@ -33,18 +33,9 @@ void LDAFBrowser::loadApplicationWindow(){
 }
 
 void LDAFBrowser::setURLMessage(QUrl url,LDAFCallBackObject callBackObject){
-
-    if (callBackObject.getObjectPointer() == nullptr){
-        qDebug()<<"Callback object is invalid"<<endl;
-        return;
-    }
-
-    QVariant returnedValue;
     QFile file (url.path());
     if (file.exists()){
-            QMetaObject::invokeMethod(callBackObject.getObjectPointer(), callBackObject.getFunctionName().toUtf8().data(),
-              Q_RETURN_ARG(QVariant, returnedValue),
-              Q_ARG(QVariant, url));
+        callBackObjectFunction(callBackObject,url);
     }else {
         qDebug()<<"File not found:"<<url.path()<<endl;
     }

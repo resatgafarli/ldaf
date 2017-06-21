@@ -13,6 +13,20 @@ LDAFBase::LDAFBase(QObject *parent, const QJsonObject & jsonConf):
 {
 }
 
+void LDAFBase::callBackObjectFunction(LDAFCallBackObject callBackObject, QVariant arg){
+
+    if (callBackObject.getObjectPointer() == nullptr){
+        qDebug()<<"Callback object is invalid"<<endl;
+        return;
+    }
+
+    QVariant returnedValue;
+    QMetaObject::invokeMethod(callBackObject.getObjectPointer(), callBackObject.getFunctionName().toUtf8().data(),
+              Q_RETURN_ARG(QVariant, returnedValue),
+              Q_ARG(QVariant, arg));
+}
+
+
 void LDAFBase::setReceiverObject(LDAFBase * object){
      m_object = object;
  }

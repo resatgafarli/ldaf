@@ -115,6 +115,9 @@ public:
    Q_INVOKABLE QString getServerResourcePath() const; 
    const QPointer<LDAFBase> & getReceiverObject() const;     
 
+protected:
+    void callBackObjectFunction(LDAFCallBackObject, QVariant);
+
 private:
     const QJsonObject & m_jsonConf;
     LDAFCommandListProcessor m_commandListProcessor;
