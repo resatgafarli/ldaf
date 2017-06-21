@@ -38,8 +38,8 @@ public:
 
     LDAFCallBackObject & operator = (const LDAFCallBackObject & other){
         if (this != &other){
-            LDAFCallBackObject copy (other);
-            std::swap(*this,copy);
+            m_callBackObject = other.m_callBackObject;
+            m_callBackJSFunc = other.m_callBackJSFunc;
         }
         return *this;
     }
