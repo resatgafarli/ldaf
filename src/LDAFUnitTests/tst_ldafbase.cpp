@@ -14,19 +14,19 @@ using ::testing::InSequence;
 /*--------------------------  LDAFCallBackObject -----------------------------------*/
 TEST(LDAFCallBackObjectTest, LDAFCallBackObjectConstruction){
   MockQObject * object = new MockQObject();
-  LDAFCallBackObject callBackObject(object,"TestFunction");
+  LDAFCallBackObject callBackObject(object,"");
 
   EXPECT_EQ(callBackObject.getObjectPointer(),object);
-  EXPECT_EQ(callBackObject.getFunctionName(),"TestFunction");
+  EXPECT_EQ(callBackObject.getFunctionName(),"");
 }
 
 TEST(LDAFCallBackObjectTest, LDAFCallBackObjectCopy){
   MockQObject * object = new MockQObject();
-  LDAFCallBackObject callBackObject(object,"TestFunction");
+  LDAFCallBackObject callBackObject(object,"");
   LDAFCallBackObject copyCallBackObject = callBackObject; 
 
   EXPECT_EQ(copyCallBackObject.getObjectPointer(),object);
-  EXPECT_EQ(copyCallBackObject.getFunctionName(),"TestFunction");
+  EXPECT_EQ(copyCallBackObject.getFunctionName(),"");
 }
 
 
@@ -34,11 +34,11 @@ TEST(LDAFCallBackObjectTest, LDAFCallBackObjectCopy){
 TEST(LDAFMessageTypeTest, LDAFMessageTypeConstruction){
     MockLDAFBase mockLDAFbase;
     MockQObject mockQObject;
-    LDAFCallBackObject callBackObject(&mockQObject,"testFunction");
+    LDAFCallBackObject callBackObject(&mockQObject,"");
     MockLDAFMessageType ldafMessage(&mockLDAFbase,callBackObject);
     EXPECT_EQ(ldafMessage.getBasicObject(),&mockLDAFbase);
     EXPECT_EQ(ldafMessage.getCallBackObject().getObjectPointer() ,&mockQObject);
-    EXPECT_EQ(ldafMessage.getCallBackObject().getFunctionName(),"testFunction");    
+    EXPECT_EQ(ldafMessage.getCallBackObject().getFunctionName(),"");    
 }
 
 TEST(LDAFUrlTypeTest, LDAFUrlTypeConstruction){
@@ -46,11 +46,11 @@ TEST(LDAFUrlTypeTest, LDAFUrlTypeConstruction){
     MockQObject mockQObject;
     QUrl url;
     url.setPath("/Example/Resource/Path");
-    LDAFCallBackObject callBackObject(&mockQObject,"testFunction");
+    LDAFCallBackObject callBackObject(&mockQObject,"");
     MockLDAFUrl ldafUrl(url,&mockLDAFbase,callBackObject);
     EXPECT_EQ(ldafUrl.getBasicObject(),&mockLDAFbase);
     EXPECT_EQ(ldafUrl.getCallBackObject().getObjectPointer(),&mockQObject);
-    EXPECT_EQ(ldafUrl.getCallBackObject().getFunctionName(),"testFunction");  
+    EXPECT_EQ(ldafUrl.getCallBackObject().getFunctionName(),"");  
     EXPECT_EQ(ldafUrl.getUrl().path(),"/Example/Resource/Path");  
 }
 
@@ -61,11 +61,11 @@ TEST(LDAFJsonTypeTest, LDAFJsonTypeConstruction){
 
     QString jscript = "{\"par1\":\"val1\",\"par2\":\"val2\"}";
     QJsonDocument jdoc = QJsonDocument::fromJson(jscript.toUtf8());
-    LDAFCallBackObject callBackObject(&mockQObject,"testFunction");
+    LDAFCallBackObject callBackObject(&mockQObject,"");
     MockLDAFJson ldafJson(jdoc.object(),&mockLDAFbase,callBackObject);
     EXPECT_EQ(ldafJson.getBasicObject(),&mockLDAFbase);
     EXPECT_EQ(ldafJson.getCallBackObject().getObjectPointer(),&mockQObject);
-    EXPECT_EQ(ldafJson.getCallBackObject().getFunctionName(),"testFunction");
+    EXPECT_EQ(ldafJson.getCallBackObject().getFunctionName(),"");
     EXPECT_EQ(ldafJson.getJsonObject()["par1"],"val1");  
     EXPECT_EQ(ldafJson.getJsonObject()["par2"],"val2");  
 }
