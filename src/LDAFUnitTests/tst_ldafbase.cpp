@@ -377,29 +377,67 @@ TEST_F(LDAFBaseTest,LDAFBaseMessageTwiceReprocessCurrentValidation){
    
 }   
 
-TEST_F(LDAFBaseTest,LDAFBaseCallBackObjectFunctionCall){
+TEST_F(LDAFBaseTest,LDAFBaseCallBackObjectFunctionCallUrlValidation){
     connectLDAFBases();
 
     MockQObject mockQObject; 
     //testCallbackFunction is name of slot defined in MockQObject
-    LDAFCallBackObject callBackObject = LDAFCallBackObject(&mockQObject,"testCallbackFunction");
+    LDAFCallBackObject callBackObject = LDAFCallBackObject(&mockQObject,"testCallBackFunction");
 
     for (auto url: urlList){
         firstLDAFBase->addCommand(url,callBackObject);
     }
-
+    
    
     for (auto url: urlList){
-       ON_CALL(*secondLDAFBase,setURLMessage(url,_))
+       ON_CALL(*secondLDAFBase,setURLMessage(url,callBackObject))
         .WillByDefault(Invoke(this,&LDAFBaseTest::setResponseUrlMessage));
+        
+        EXPECT_CALL(*secondLDAFBase,setURLMessage(url,callBackObject)).Times(1);
+        EXPECT_CALL(*firstLDAFBase,setURLMessage(url,callBackObject)).Times(1); 
 
+      ON_CALL(*firstLDAFBase,setURLMessage(url,callBackObject))
+        .WillByDefault(Invoke(this,&LDAFBaseTest::invokeUrlCallbackObjectFunc));
     }
 
     firstLDAFBase->processAllForward();
 
-    /*TODO: add url commands. bradcas with this url and callBackObject when sequence 
-    will be backed to setURLMessage call firsLDAFBase callBackObjectFunction function with this pars
-    It will run MockQObject::testCallbackFunction, testCallbackFunction will MockQObject::m_responsData 
-    get this data by clling MockQObject::getResponseData and compare with added (passed url) for test*/
+    EXPECT_TRUE(mockQObject.getResponseData().size() == urlList.size());
 
+   for (int i =0; i< urlList.size();++i){
+        EXPECT_TRUE(mockQObject.getResponseData()[i]==urlList[i]);
+    }
 }
+/*
+TEST_F(LDAFBaseTest,LDAFBaseCallBackObjectFunctionCallJsonValidation){
+    connectLDAFBases();
+
+    MockQObject mockQObject; 
+    //testCallbackFunction is name of slot defined in MockQObject
+    LDAFCallBackObject callBackObject = LDAFCallBackObject(&mockQObject,"testCallBackFunction");
+
+    for (auto json: jsonList){
+        firstLDAFBase->addCommand(json,callBackObject);
+    }
+  
+ /*  
+    for (auto json: jsonList){
+       ON_CALL(*secondLDAFBase,setJsonMessage(json,callBackObject))
+        .WillByDefault(Invoke(this,&LDAFBaseTest::setResponseJsonMessage));
+        
+        EXPECT_CALL(*secondLDAFBase,setJsonMessage(json,callBackObject)).Times(1);
+        EXPECT_CALL(*firstLDAFBase,setJsonMessage(json,callBackObject)).Times(1); 
+
+      ON_CALL(*firstLDAFBase,setJsonMessage(json,callBackObject))
+        .WillByDefault(Invoke(this,&LDAFBaseTest::invokeJsonCallbackObjectFunc));
+    }
+
+    firstLDAFBase->processAllForward();
+
+    EXPECT_TRUE(mockQObject.getResponseData().size() == jsonList.size());
+
+   for (int i =0; i< jsonList.size();++i){
+        EXPECT_TRUE(mockQObject.getResponseData()[i]==jsonList[i]);
+    }
+    
+}*/

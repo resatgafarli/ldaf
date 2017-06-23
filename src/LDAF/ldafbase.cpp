@@ -14,7 +14,6 @@ LDAFBase::LDAFBase(QObject *parent, const QJsonObject & jsonConf):
 }
 
 void LDAFBase::callBackObjectFunction(LDAFCallBackObject callBackObject, QVariant arg){
-
     if (callBackObject.getObjectPointer() == nullptr){
         qDebug()<<"Callback object is invalid"<<endl;
         return;

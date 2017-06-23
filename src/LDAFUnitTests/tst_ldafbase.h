@@ -18,16 +18,15 @@ public:
   {}
 
 public:
-  const QVariant & getResponseData() const{
+  const QList<QVariant> & getResponseData() const{
     return m_responsData;
   }  
-public slots:
-  void testCallbackFunction(QVariant data){
-    qDebug()<<"Hello From Callback Funcition"<<endl;
-    m_responsData = data;
+public:
+    Q_INVOKABLE QVariant testCallBackFunction(QVariant data){
+    m_responsData << data;
   } 
 private:
-  QVariant m_responsData;
+  QList<QVariant> m_responsData;
 };
 
 
@@ -38,6 +37,10 @@ public:
     }
    MOCK_METHOD2(setURLMessage,void(QUrl, LDAFCallBackObject));
    MOCK_METHOD2(setJsonMessage,void(QJsonObject, LDAFCallBackObject));
+
+   virtual void callBackObjectFunction(LDAFCallBackObject callBackObject, QVariant data){
+      LDAFBase::callBackObjectFunction(callBackObject,data);
+   }
 };
 
 class MockLDAFMessageType: public LDAFMessageType{
@@ -147,6 +150,15 @@ public:
         secondLDAFBase->addCommand(json,callBackObject);
         secondLDAFBase->processForwardByOne();
     }
+
+    virtual void invokeUrlCallbackObjectFunc(QUrl url, LDAFCallBackObject callBackObject){
+      firstLDAFBase->callBackObjectFunction(callBackObject,url);
+    }
+
+    virtual void invokeJsonCallbackObjectFunc(QJsonObject json, LDAFCallBackObject callBackObject){
+      firstLDAFBase->callBackObjectFunction(callBackObject,json);
+    }
+
 
     virtual void setupConfiguration(){
       QString jscript = QString("{\"server_resource_root\":\"ServerResourcePath\",\"browser_home_page\":\"HomePage\"}");

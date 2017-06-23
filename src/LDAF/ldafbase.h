@@ -116,7 +116,7 @@ public:
    const QPointer<LDAFBase> & getReceiverObject() const;     
 
 protected:
-    void callBackObjectFunction(LDAFCallBackObject, QVariant);
+    virtual void callBackObjectFunction(LDAFCallBackObject, QVariant);
 
 private:
     const QJsonObject & m_jsonConf;
