@@ -367,8 +367,8 @@ TEST_F(LDAFBaseTest,LDAFBaseMessageTwiceReprocessCurrentValidation){
        ON_CALL(*secondLDAFBase,setURLMessage(urlList.at(mid_command-1),_))
         .WillByDefault(Invoke(this,&LDAFBaseTest::setResponseUrlMessage));
        
-       EXPECT_CALL(*secondLDAFBase,setURLMessage(urlList.at(mid_command-1),_)).Times(3);
-       EXPECT_CALL(*firstLDAFBase,setURLMessage(urlList.at(mid_command-1),_)).Times(3);
+        EXPECT_CALL(*secondLDAFBase,setURLMessage(urlList.at(mid_command-1),_)).Times(3);
+        EXPECT_CALL(*firstLDAFBase,setURLMessage(urlList.at(mid_command-1),_)).Times(3);
        
         firstLDAFBase->reProcessCurrent();//1
         firstLDAFBase->reProcessCurrent();//2
@@ -376,3 +376,30 @@ TEST_F(LDAFBaseTest,LDAFBaseMessageTwiceReprocessCurrentValidation){
    }
    
 }   
+
+TEST_F(LDAFBaseTest,LDAFBaseCallBackObjectFunctionCall){
+    connectLDAFBases();
+
+    MockQObject mockQObject; 
+    //testCallbackFunction is name of slot defined in MockQObject
+    LDAFCallBackObject callBackObject = LDAFCallBackObject(&mockQObject,"testCallbackFunction");
+
+    for (auto url: urlList){
+        firstLDAFBase->addCommand(url,callBackObject);
+    }
+
+   
+    for (auto url: urlList){
+       ON_CALL(*secondLDAFBase,setURLMessage(url,_))
+        .WillByDefault(Invoke(this,&LDAFBaseTest::setResponseUrlMessage));
+
+    }
+
+    firstLDAFBase->processAllForward();
+
+    /*TODO: add url commands. bradcas with this url and callBackObject when sequence 
+    will be backed to setURLMessage call firsLDAFBase callBackObjectFunction function with this pars
+    It will run MockQObject::testCallbackFunction, testCallbackFunction will MockQObject::m_responsData 
+    get this data by clling MockQObject::getResponseData and compare with added (passed url) for test*/
+
+}

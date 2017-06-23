@@ -10,7 +10,24 @@ License: GPL-3.0
 #include "ldafbase.h"
 
 
-class MockQObject:public QObject{
+class MockQObject: public QObject{
+  Q_OBJECT
+public:
+  MockQObject(QObject* parent=nullptr):
+    QObject(parent)
+  {}
+
+public:
+  const QVariant & getResponseData() const{
+    return m_responsData;
+  }  
+public slots:
+  void testCallbackFunction(QVariant data){
+    qDebug()<<"Hello From Callback Funcition"<<endl;
+    m_responsData = data;
+  } 
+private:
+  QVariant m_responsData;
 };
 
 
