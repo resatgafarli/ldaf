@@ -24,6 +24,7 @@ public:
 public:
     Q_INVOKABLE QVariant testCallBackFunction(QVariant data){
     m_responsData << data;
+    return QVariant();
   } 
 private:
   QList<QVariant> m_responsData;
