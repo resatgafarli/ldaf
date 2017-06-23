@@ -404,11 +404,12 @@ TEST_F(LDAFBaseTest,LDAFBaseCallBackObjectFunctionCallUrlValidation){
 
     EXPECT_TRUE(mockQObject.getResponseData().size() == urlList.size());
 
+
    for (int i =0; i< urlList.size();++i){
         EXPECT_TRUE(mockQObject.getResponseData()[i]==urlList[i]);
     }
 }
-/*
+
 TEST_F(LDAFBaseTest,LDAFBaseCallBackObjectFunctionCallJsonValidation){
     connectLDAFBases();
 
@@ -420,7 +421,7 @@ TEST_F(LDAFBaseTest,LDAFBaseCallBackObjectFunctionCallJsonValidation){
         firstLDAFBase->addCommand(json,callBackObject);
     }
   
- /*  
+   
     for (auto json: jsonList){
        ON_CALL(*secondLDAFBase,setJsonMessage(json,callBackObject))
         .WillByDefault(Invoke(this,&LDAFBaseTest::setResponseJsonMessage));
@@ -440,4 +441,4 @@ TEST_F(LDAFBaseTest,LDAFBaseCallBackObjectFunctionCallJsonValidation){
         EXPECT_TRUE(mockQObject.getResponseData()[i]==jsonList[i]);
     }
     
-}*/
+}
