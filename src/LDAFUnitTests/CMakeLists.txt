@@ -36,7 +36,7 @@ set (LDAF_SOURCES
 ############################ Main Executable Project Settings #################### 
 # Main Project Definition LDAF Source Code Inclusion
 project(ldaf_tester VERSION ${LDAF_VERSION})
-set (TEST_SOURCES tst_main.cpp tst_ldafbase.cpp tst_ldafbase.h)
+set (TEST_SOURCES tst_main.cpp tst_ldafbase.cpp tst_ldafbase.h tst_ldafbrowser.cpp tst_ldafbrowser.h)
 add_executable(${PROJECT_NAME} ${TEST_SOURCES} ${LDAF_SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION  ${LDAF_VERSION})
 ############################ End of Main Executable Project Settings ############# 
