@@ -31,6 +31,7 @@ link_directories (${CMAKE_CURRENT_SOURCE_DIR}/../googletest/lib)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../LDAF)
 set (LDAF_SOURCES 
     ../LDAF/ldafbase.cpp
+    ../LDAF/ldafbrowser.cpp
 )
  
 ############################ Main Executable Project Settings #################### 
@@ -52,7 +53,9 @@ target_link_libraries(${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
 
 # Qt Link
 find_package(Qt5Core REQUIRED)
-target_link_libraries(${PROJECT_NAME} Qt5::Core)
+find_package(Qt5Qml REQUIRED)
+find_package(Qt5Quick REQUIRED)
+target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Qml Qt5::Quick)
 ######################### End of Dependency And Link Settings ##########################
 
 ######################### Testing Section ##############################################

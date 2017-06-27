@@ -7,5 +7,7 @@ License: GPL-3.0
 #include "tst_ldafbrowser.h"
 
 TEST(LDAFBrowserTest,Example){
-    
+    QJsonObject config;
+    QObject obj;
+    //LDAFBrowser ldafBrowser(&obj,config);
 }
