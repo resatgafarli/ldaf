@@ -15,14 +15,18 @@ License: GPL-3.0
 #include <QFileInfo>
 
 LDAFBrowser::LDAFBrowser(QObject * parent, const QJsonObject & jsonConf) : LDAFBase(parent,jsonConf),
-    m_engine(new QQmlEngine),
-    m_component (new QQmlComponent(m_engine)),
+    m_engine(nullptr),
+    m_component (nullptr),
     m_appWindowRoot(nullptr)
 {
-    m_engine->rootContext()->setContextProperty("ldafbrowser",this);
+    
 }
 
 void LDAFBrowser::loadApplicationWindow(){
+    m_engine = new QQmlEngine;
+    m_component  = new QQmlComponent(m_engine);
+    m_engine->rootContext()->setContextProperty("ldafbrowser",this);
+
     QUrl url("qrc:/ldafbrowser.qml");
     m_component->loadUrl(url);
     while (m_component->isLoading()){}
